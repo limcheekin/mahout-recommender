@@ -32,7 +32,7 @@ target(main: "Insert data files to database") {
 		exit 1
 	} else {
 		Sql sql = new Sql(grailsApp.mainContext.dataSource)
-		preferenceTableName = grailsApp.config.mahout.recommender.preference.tableName
+		preferenceTableName = grailsApp.config.mahout.recommender.preference.table
 		userIdColumn = grailsApp.config.mahout.recommender.preference.userIdColumn
 		itemIdColumn = grailsApp.config.mahout.recommender.preference.itemIdColumn
 		valueColumn = grailsApp.config.mahout.recommender.preference.valueColumn

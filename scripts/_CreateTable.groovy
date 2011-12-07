@@ -19,12 +19,14 @@
  *
  * @since 0.5
  */
-includeTargets << new File("${mahoutRecommenderPluginDir}/scripts/_CreateTable.groovy")
+import groovy.sql.Sql
 
-target(main: "Create slopeone diffs table") {
-	depends(bootstrap)
-	createTable grailsApp.config.mahout.recommender.preference.table,
-			"${mahoutRecommenderPluginDir}/src/sql/mysql_preference.sql"
+includeTargets << grailsScript("_GrailsBootstrap")
+
+createTable = { String tableName, String sqlFile ->
+	Sql sql = new Sql(grailsApp.mainContext.dataSource)
+	sqlStrings = new File(sqlFile).text.trim().split(";")
+	sqlStrings.each { sqlString -> sql.execute sqlString }
+	ant.echo "$tableName table created."
 }
 
-setDefaultTarget(main)

@@ -21,10 +21,10 @@
  */
 includeTargets << new File("${mahoutRecommenderPluginDir}/scripts/_CreateTable.groovy")
 
-target(main: "Create slopeone diffs table") {
+target(main: "Create preference table") {
 	depends(bootstrap)
-	createTable grailsApp.config.mahout.recommender.preference.table,
-			"${mahoutRecommenderPluginDir}/src/sql/mysql_preference.sql"
+	createTable grailsApp.config.mahout.recommender.slopeone.diffs.table,
+			"${mahoutRecommenderPluginDir}/src/sql/mysql_slopeone_diffs.sql"
 }
 
 setDefaultTarget(main)

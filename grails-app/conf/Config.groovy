@@ -23,8 +23,15 @@ log4j = {
     warn   'org.mortbay.log'
 }
 
-mahout.recommender.preference.tableName = "taste_preferences"
-mahout.recommender.preference.userIdColumn = "user_id"
-mahout.recommender.preference.itemIdColumn = "item_id"
-mahout.recommender.preference.valueColumn = "preference"
-mahout.recommender.preference.lastUpdatedColumn = "last_updated"
+mahout.recommender.preference.table = 'taste_preferences'
+mahout.recommender.preference.userIdColumn = 'user_id'
+mahout.recommender.preference.itemIdColumn = 'item_id'
+mahout.recommender.preference.valueColumn = 'preference'
+mahout.recommender.preference.lastUpdatedColumn = 'last_updated'
+mahout.recommender.slopeone.diffs.table = 'taste_slopeone_diffs'
+mahout.recommender.slopeone.diffs.itemIDAColumn = 'item_id_a'
+mahout.recommender.slopeone.diffs.itemIDBColumn = 'item_id_b'
+mahout.recommender.slopeone.diffs.countColumn = 'count'
+mahout.recommender.slopeone.diffs.avgColumn = 'average_diff'
+mahout.recommender.slopeone.diffs.stdevColumn = 'standard_deviation'
+mahout.recommender.slopeone.diffs.minDiffCount = 2
