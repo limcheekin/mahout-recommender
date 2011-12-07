@@ -27,32 +27,36 @@ import org.apache.mahout.cf.taste.neighborhood.*
 import org.apache.mahout.cf.taste.recommender.*
 import org.apache.mahout.cf.taste.similarity.*
 import org.apache.mahout.cf.taste.impl.model.jdbc.*
+import org.apache.mahout.common.RandomUtils
+import org.apache.mahout.cf.taste.eval.RecommenderBuilder
+import org.apache.mahout.cf.taste.eval.RecommenderEvaluator
+import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommenderEvaluator
+import org.apache.mahout.cf.taste.common.TasteException
 
 includeTargets << grailsScript("_GrailsBootstrap")
 
-target(main: "Run simple recommender") {
-	depends(bootstrap)
-	JDBCDataModel model = new MySQLJDBCDataModel(
-			grailsApp.mainContext.dataSource, 
+target(main: "Run recommender evaluator") {
+	depends(parseArguments, bootstrap)
+	String similarity = "EuclideanDistance"
+	
+	RandomUtils.useTestSeed()
+	JDBCDataModel dataModel = new MySQLJDBCDataModel(
+			grailsApp.mainContext.dataSource,
 			grailsApp.config.mahout.recommender.preference.table,
 			grailsApp.config.mahout.recommender.preference.userIdColumn,
 			grailsApp.config.mahout.recommender.preference.itemIdColumn,
 			grailsApp.config.mahout.recommender.preference.valueColumn,
 			grailsApp.config.mahout.recommender.preference.lastUpdatedColumn)
 	
-	UserSimilarity similarity = new PearsonCorrelationSimilarity(model)
+	RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
+	// Build the same recommender for testing that we did last time:
+	UserBasedRecommenderBuilder = classLoader.loadClass("org.grails.mahout.recommender.UserBased${similarity}RecommenderBuilder")
+	RecommenderBuilder recommenderBuilder = UserBasedRecommenderBuilder.newInstance()
+	recommenderBuilder.threshold = 0.7
 	
-	UserNeighborhood neighborhood =
-			new NearestNUserNeighborhood(2, similarity, model)
-	
-	Recommender recommender = new GenericUserBasedRecommender(
-			model, neighborhood, similarity)
-	
-	List<RecommendedItem> recommendations = recommender.recommend(1, 1)
-	
-	for (RecommendedItem recommendation : recommendations) {
-		ant.echo recommendation
-	}
+	// Use 70% of the data to train test using the other 30%.
+	double score = evaluator.evaluate(recommenderBuilder, null, dataModel, 0.7, 1.0)
+	echo "score = $score"
 }
 
 setDefaultTarget(main)
