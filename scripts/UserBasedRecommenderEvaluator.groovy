@@ -19,43 +19,66 @@
  *
  * @since 0.5
  */
-import org.apache.mahout.cf.taste.impl.neighborhood.*
-import org.apache.mahout.cf.taste.impl.recommender.*
-import org.apache.mahout.cf.taste.impl.similarity.*
-import org.apache.mahout.cf.taste.model.*
-import org.apache.mahout.cf.taste.neighborhood.*
-import org.apache.mahout.cf.taste.recommender.*
-import org.apache.mahout.cf.taste.similarity.*
-import org.apache.mahout.cf.taste.impl.model.jdbc.*
-import org.apache.mahout.common.RandomUtils
-import org.apache.mahout.cf.taste.eval.RecommenderBuilder
-import org.apache.mahout.cf.taste.eval.RecommenderEvaluator
-import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommenderEvaluator
-import org.apache.mahout.cf.taste.common.TasteException
 
 includeTargets << grailsScript("_GrailsBootstrap")
 
 target(main: "Run recommender evaluator") {
 	depends(parseArguments, bootstrap)
-	String similarity = "EuclideanDistance"
+	ant.input(message:"Is the items have preference value?",validargs:"y,n", addproperty:"hasPreference")
+	hasPreference = ant.antProject.properties["hasPreference"] == 'y'
+	if (hasPreference) {
+		println "1) Pearson correlation"
+		println "2) Pearson correlation + weighting"
+		println "3) Euclidean distance"
+		println "4) Euclidean distance + weighting"
+		println "5) Log-likelihood"
+		println "6) Tanimoto coefficient"
+		ant.input(message:"Select similarity metric:", validargs:"1,2,3,4,5,6", addproperty:"similaritySelected")
+		similaritySelected = ant.antProject.properties["similaritySelected"]
+		switch (similaritySelected) {
+			case '1':
+			case '2':
+				similarity = "PearsonCorrelation"
+				break
+			case '3':
+			case '4':
+				similarity = "EuclideanDistance"
+				break
+			case '5':
+				similarity = "LogLikelihood"
+				break
+			case '6':
+				similarity = "TanimotoCoefficient"
+		}
+	} else {
+		println "1) Log-likelihood"
+		println "2) Tanimoto coefficient"
+		ant.input(message:"Select similarity metric:", validargs:"1,2", addproperty:"similaritySelected")
+		similaritySelected = ant.antProject.properties["similaritySelected"]
+		switch (similaritySelected) {
+			case '1':
+				similarity = "LogLikelihood"
+				break
+			case '2':
+				similarity = "TanimotoCoefficient"
+		}
+	}
+	ant.input(message:"Enter value for nearestN neighborhood (ex: 2) or threshold neighborhood (ex: 0.7):", addproperty:"neighborhood")
+	neighborhood = ant.antProject.properties["neighborhood"]
 	
-	RandomUtils.useTestSeed()
-	JDBCDataModel dataModel = new MySQLJDBCDataModel(
-			grailsApp.mainContext.dataSource,
-			grailsApp.config.mahout.recommender.preference.table,
-			grailsApp.config.mahout.recommender.preference.userIdColumn,
-			grailsApp.config.mahout.recommender.preference.itemIdColumn,
-			grailsApp.config.mahout.recommender.preference.valueColumn,
-			grailsApp.config.mahout.recommender.preference.lastUpdatedColumn)
+	ant.input(message:"Enter training percentage:", addproperty:"trainingPercentage", 
+		        defaultvalue: grailsApp.config.mahout.recommender.evaluator.trainingPercentage)
+	trainingPercentage = ant.antProject.properties["trainingPercentage"] as Double
 	
-	RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
-	// Build the same recommender for testing that we did last time:
-	UserBasedRecommenderBuilder = classLoader.loadClass("org.grails.mahout.recommender.UserBased${similarity}RecommenderBuilder")
-	RecommenderBuilder recommenderBuilder = UserBasedRecommenderBuilder.newInstance()
-	recommenderBuilder.threshold = 0.7
+	ant.input(message:"Enter evaluation percentage:", addproperty:"evaluationPercentage", 
+		        defaultvalue: grailsApp.config.mahout.recommender.evaluator.evaluationPercentage)
+	evaluationPercentage = ant.antProject.properties["evaluationPercentage"] as Double
 	
-	// Use 70% of the data to train test using the other 30%.
-	double score = evaluator.evaluate(recommenderBuilder, null, dataModel, 0.7, 1.0)
+	withWeighting = hasPreference && similaritySelected == '2' | similaritySelected == '4'
+	MahoutRecommenderEvaluator = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderEvaluator")
+	score = MahoutRecommenderEvaluator.evaluateUserBasedRecommender(hasPreference, similarity, 
+					withWeighting, neighborhood, trainingPercentage, evaluationPercentage)
+	
 	echo "score = $score"
 }
 

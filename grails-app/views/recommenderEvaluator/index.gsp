@@ -47,6 +47,19 @@ recommender using one of several similarity metrics, and using a nearest-n user 
                           <td></td>
                         </tr>
                         <tr class="even">
+                          <td>EuclideanDistance</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>                         
+                        <tr class="odd">
                           <td>Loglikelihood</td>
                           <td></td>
                           <td></td>
@@ -59,7 +72,7 @@ recommender using one of several similarity metrics, and using a nearest-n user 
                           <td></td>
                           <td></td>
                         </tr>
-                        <tr class="odd">
+                        <tr class="even">
                           <td>TanimotoCoefficient</td>
                           <td></td>
                           <td></td>
@@ -72,19 +85,7 @@ recommender using one of several similarity metrics, and using a nearest-n user 
                           <td></td>
                           <td></td>
                         </tr>
-                        <tr class="even">
-                          <td>EuclideanDistance</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>                        
+                       
                     </tbody>
                 </table>
             </div>            
@@ -124,6 +125,19 @@ neighborhood. Some values are "not a number", or undefined, and are denoted by J
                           <td></td>
                         </tr>
                         <tr class="even">
+                          <td>EuclideanDistance</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>                         
+                        <tr class="odd">
                           <td>Loglikelihood</td>
                           <td></td>
                           <td></td>
@@ -136,7 +150,7 @@ neighborhood. Some values are "not a number", or undefined, and are denoted by J
                           <td></td>
                           <td></td>
                         </tr>
-                        <tr class="odd">
+                        <tr class="even">
                           <td>TanimotoCoefficient</td>
                           <td></td>
                           <td></td>
@@ -148,20 +162,7 @@ neighborhood. Some values are "not a number", or undefined, and are denoted by J
                           <td></td>
                           <td></td>
                           <td></td>
-                        </tr>
-                        <tr class="even">
-                          <td>EuclideanDistance</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>                        
+                        </tr>                      
                     </tbody>
                 </table>
             </div>     

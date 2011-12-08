@@ -31,20 +31,25 @@ import org.apache.mahout.cf.taste.common.Weighting
 *
 * @since 0.5
 */
-class UserBasedEuclideanDistanceRecommenderBuilder implements RecommenderBuilder {
+class UserBasedLogLikelihoodRecommenderBuilder implements RecommenderBuilder {
 	Integer nearestN
 	Double threshold
-	Boolean withWeighting
+	Boolean hasPreference
 	
 	public Recommender buildRecommender(DataModel model) throws TasteException {
-		UserSimilarity similarity = new EuclideanDistanceSimilarity(model, 
-				withWeighting ? Weighting.WEIGHTED : Weighting.UNWEIGHTED)
+		UserSimilarity similarity = new LogLikelihoodSimilarity(model)
 		UserNeighborhood neighborhood 	
 		if (nearestN) {	
 			neighborhood = new NearestNUserNeighborhood(nearestN, similarity, model)
 		} else {
 			neighborhood = new ThresholdUserNeighborhood(threshold, similarity, model)
 		}
-		return new GenericUserBasedRecommender(model, neighborhood, similarity)
+		Recommender recommender
+		if (hasPreference) {
+		  recommender = new GenericUserBasedRecommender(model, neighborhood, similarity)
+		} else { 
+		  recommender = new GenericBooleanPrefUserBasedRecommender(model, neighborhood, similarity)
+		}
+		return recommender
 	}
 }

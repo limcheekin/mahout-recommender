@@ -35,3 +35,6 @@ mahout.recommender.slopeone.diffs.countColumn = 'count'
 mahout.recommender.slopeone.diffs.avgColumn = 'average_diff'
 mahout.recommender.slopeone.diffs.stdevColumn = 'standard_deviation'
 mahout.recommender.slopeone.diffs.minDiffCount = 2
+mahout.recommender.evaluator.trainingPercentage = 0.7
+mahout.recommender.evaluator.evaluationPercentage = 1.0
+
