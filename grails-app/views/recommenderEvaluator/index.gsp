@@ -15,8 +15,11 @@
 		evaluateUserBasedRecommender('fixedSizeNeighborhoodWithoutPref', false);
 		scrollToElement('thresholdNeighborhoodWithoutPrefHeader');
 		evaluateUserBasedRecommender('thresholdNeighborhoodWithoutPref', false);
-		evaluateItemBasedRecommender('itemWithPref', true)		
-		evaluateItemBasedRecommender('itemWithoutPref', false)		
+		evaluateItemBasedRecommender('itemWithPref', true);		
+		evaluateItemBasedRecommender('itemWithoutPref', false);	
+		scrollToElement('slopeOneRecommender');
+		evaluateSlopeOneRecommender('#weight', true);	
+		evaluateSlopeOneRecommender('#unweight', false);	
 		return false;
 	}
 
@@ -104,6 +107,25 @@
 		}				
 	}
 
+	function evaluateSlopeOneRecommender(selector, withWeighting) {
+		var data = new Object();
+		var $td = $(selector);
+		data['withWeighting'] = withWeighting;  
+		
+		$.ajax({
+			url : 'recommenderEvaluator/evaluateSlopeOneRecommender',
+			dataType: "text",
+			data: data,
+			async: false,
+			success : function(response) {
+				$td.text(response);
+			},
+			error : function() {
+				$td.html('<span style="color:red">Err</span>');
+			}
+		}); 	
+	}	
+	
 function scrollToElement(id) {
 	  var new_position = $('#' + id).offset();
 	  window.scrollTo(new_position.left,new_position.top);
@@ -138,6 +160,9 @@ function scrollToElement(id) {
    left: 1%;
 }
 
+#slopeOneRecommender {
+  width: 50%;
+} 
 </style>
 </head>
 <body>
@@ -522,6 +547,28 @@ neighborhood.
 </div>
 </div>
 
+<h2>Slope-One Recommender</h2>
+	<div class="list">
+	<table id="slopeOneRecommender">
+		<thead>
+			<tr>
+				<th width="70%">Weighting</th>
+				<th>Score</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="odd">
+				<td>With weighting</td>
+				<td id="weight"></td>
+			</tr>
+			<tr class="even">
+				<td>Without weighting</td>
+				<td id="unweight"></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>  
+ 
 </div>
 </body>
 </html>

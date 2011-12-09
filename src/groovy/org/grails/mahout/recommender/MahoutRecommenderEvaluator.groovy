@@ -65,7 +65,7 @@ class MahoutRecommenderEvaluator {
 		RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
 		
 		Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
-		LOG.debug score
+		LOG.debug "score = $score"
 		return score
 	}
 																			
@@ -89,7 +89,7 @@ class MahoutRecommenderEvaluator {
 			RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
 			
 			Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
-			LOG.debug score
+			LOG.debug "score = $score"
 			return score
 	}
 
@@ -105,7 +105,7 @@ class MahoutRecommenderEvaluator {
 			RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
 			
 			Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
-			LOG.debug score
+			LOG.debug "score = $score"
 			return score
 	}
 	
