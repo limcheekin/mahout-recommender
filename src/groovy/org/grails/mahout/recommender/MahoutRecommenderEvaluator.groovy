@@ -46,7 +46,7 @@ class MahoutRecommenderEvaluator {
 																			String neighborhood, 
 																			Double trainingPercentage, 
 																			Double evaluationPercentage) {
-		LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
+		LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
 		RandomUtils.useTestSeed()
 		JDBCDataModel model = getDataModel(hasPreference)
 		Class UserBasedRecommenderBuilder = MahoutRecommenderEvaluator.classLoader.loadClass("org.grails.mahout.recommender.UserBased${similarity}RecommenderBuilder")
@@ -74,7 +74,7 @@ class MahoutRecommenderEvaluator {
 																						Boolean withWeighting,
 																						Double trainingPercentage,
 																						Double evaluationPercentage) {
-			LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting"
+			LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
 			RandomUtils.useTestSeed()
 			JDBCDataModel model = getDataModel(hasPreference)
 			Class ItemBasedRecommenderBuilder = MahoutRecommenderEvaluator.classLoader.loadClass("org.grails.mahout.recommender.ItemBased${similarity}RecommenderBuilder")
@@ -92,8 +92,25 @@ class MahoutRecommenderEvaluator {
 			LOG.debug score
 			return score
 	}
-																			
-	private static JDBCDataModel getDataModel(Boolean hasPreference) {
+
+	static Double evaluateSlopeOneRecommender(Boolean withWeighting,
+																						Double trainingPercentage,
+																						Double evaluationPercentage) {
+			LOG.debug "withWeighting = $withWeighting, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
+			RandomUtils.useTestSeed()
+			JDBCDataModel model = getDataModel(true)
+			RecommenderBuilder recommenderBuilder = new SlopeOneRecommenderBuilder()
+			recommenderBuilder.withWeighting = withWeighting
+
+			RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
+			
+			Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
+			LOG.debug score
+			return score
+	}
+	
+																																									
+	static JDBCDataModel getDataModel(Boolean hasPreference) {
 		def grailsApp = ApplicationHolder.application
 		JDBCDataModel model
 		if (hasPreference)
