@@ -10,9 +10,13 @@
 	});
 	function runEvaluator(event) {
 		evaluateUserBasedRecommender('fixedSizeNeighborhoodWithPref', true);
+		scrollToElement('thresholdNeighborhoodWithPrefHeader');
 		evaluateUserBasedRecommender('thresholdNeighborhoodWithPref', true);
-		evaluateUserBasedRecommender('fixedSizeNeighborhoodNoPref', false);
-		evaluateUserBasedRecommender('thresholdNeighborhoodNoPref', false);		
+		evaluateUserBasedRecommender('fixedSizeNeighborhoodWithoutPref', false);
+		scrollToElement('thresholdNeighborhoodWithoutPrefHeader');
+		evaluateUserBasedRecommender('thresholdNeighborhoodWithoutPref', false);
+		evaluateItemBasedRecommender('itemWithPref', true)		
+		evaluateItemBasedRecommender('itemWithoutPref', false)		
 		return false;
 	}
 
@@ -58,7 +62,83 @@
 			}
 		}				
 	}
+
+	function evaluateItemBasedRecommender(tableId, hasPreference) {
+		var $table = $('#' + tableId);
+		var $rowDatas = $('tr td', $table);
+		var j = 0;
+		var similarity;
+		var weightingIndex;
+		var withWeighting;
+		var data = new Object();
+		var $td;
+		
+		for (var i = 0; i < $rowDatas.length; i++) {
+			j = i % 2;
+			$td = $($rowDatas[i]);
+			if (j == 0) {
+				similarity = $td.text();
+				weightingIndex = similarity.indexOf('+');
+				withWeighting = weightingIndex > -1;
+				if (withWeighting) {
+					similarity = similarity.substring(0, weightingIndex - 1);
+				} 
+			} else {
+				data['hasPreference'] = hasPreference;
+				data['similarity'] = similarity;
+				data['withWeighting'] = withWeighting;  
+				
+				$.ajax({
+					url : 'recommenderEvaluator/evaluateItemBasedRecommender',
+					dataType: "text",
+					data: data,
+					async: false,
+					success : function(response) {
+						$td.text(response);
+					},
+					error : function() {
+						$td.html('<span style="color:red">Err</span>');
+					}
+				}); 
+			}
+		}				
+	}
+
+function scrollToElement(id) {
+	  var new_position = $('#' + id).offset();
+	  window.scrollTo(new_position.left,new_position.top);
+}	
+
 </script>
+<style type="text/css">
+.mask{
+   position: relative;
+   overflow: hidden;
+   margin: 0px auto;
+   width: 100%;
+}
+
+.container{
+   position: relative;
+   width: 100%;
+   right: 50%;
+}
+.col1{
+   position: relative;
+   overflow: hidden;
+   float: left;
+   width: 49%;
+   left: 101%;
+}
+.col2{
+   position: relative;
+   overflow: hidden;
+   float: left;
+   width: 49%;
+   left: 1%;
+}
+
+</style>
 </head>
 <body>
 <div class="nav">
@@ -173,7 +253,7 @@ several similarity metrics, and using a nearest-n user neighborhood.
 	</tbody>
 </table>
 </div>
-<h4>Threshold-based neighborhood</h4>
+<h4 id="thresholdNeighborhoodWithPrefHeader">Threshold-based neighborhood</h4>
 <div class="list">Average absolute difference in estimated and
 actual preferences when evaluating a userbased recommender using one of
 several similarity metrics, and using a threshold-based user
@@ -279,7 +359,7 @@ neighborhood.
 <h3>Without Preference (Boolean Preference)</h3>
 <h4>Fixed-size neighborhood</h4>
 <div class="list">
-<table id="fixedSizeNeighborhoodNoPref">
+<table id="fixedSizeNeighborhoodWithoutPref">
 	<thead>
 		<tr>
 			<th width="30%">Similarity</th>
@@ -325,9 +405,9 @@ neighborhood.
 	</tbody>
 </table>
 </div>
-<h4>Threshold-based neighborhood</h4>
+<h4 id="thresholdNeighborhoodWithoutPrefHeader">Threshold-based neighborhood</h4>
 <div class="list">
-<table id="thresholdNeighborhoodNoPref">
+<table id="thresholdNeighborhoodWithoutPref">
 	<thead>
 		<tr>
 			<th width="30%">Similarity</th>
@@ -372,6 +452,74 @@ neighborhood.
 		</tr>
 	</tbody>
 </table>
+</div>
+
+<div class="mask">
+<h2>Item-based Recommenders</h2> 
+<div class="container">
+  <div class="col1">
+  <h3>Without Preference</h3>
+			<div class="list">
+			<table id="itemWithoutPref">
+				<thead>
+					<tr>
+						<th width="70%">Similarity</th>
+						<th>Score</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="odd">
+						<td>LogLikelihood</td>
+						<td></td>
+					</tr>
+					<tr class="even">
+						<td>TanimotoCoefficient</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			</div>  
+	</div>
+	<div class="col2">
+  <h3>With Preference</h3>
+			<div class="list">
+			<table id="itemWithPref">
+				<thead>
+					<tr>
+						<th width="70%">Similarity</th>
+						<th>Score</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="odd">
+						<td>PearsonCorrelation</td>
+						<td></td>
+					</tr>
+					<tr class="even">
+						<td>PearsonCorrelation + weighting</td>
+						<td></td>
+					</tr>
+					<tr class="odd">
+						<td>EuclideanDistance</td>
+						<td></td>
+					</tr>
+					<tr class="even">
+						<td>EuclideanDistance + weighting</td>
+						<td></td>
+					</tr>
+					<tr class="odd">
+						<td>LogLikelihood</td>
+						<td></td>
+					</tr>
+					<tr class="even">
+						<td>TanimotoCoefficient</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			</div>  
+	</div> 
+</div>
 </div>
 
 </div>
