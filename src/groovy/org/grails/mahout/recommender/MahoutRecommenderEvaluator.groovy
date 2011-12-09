@@ -27,7 +27,9 @@ import org.apache.mahout.cf.taste.eval.RecommenderBuilder
 import org.apache.mahout.cf.taste.eval.RecommenderEvaluator
 import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommenderEvaluator
 import org.apache.mahout.cf.taste.common.TasteException
-import org.codehaus.groovy.grails.commons.ApplicationHolder 
+import org.codehaus.groovy.grails.commons.ApplicationHolder
+import org.apache.commons.logging.Log
+import org.apache.commons.logging.LogFactory
 
 /**
  *
@@ -36,12 +38,15 @@ import org.codehaus.groovy.grails.commons.ApplicationHolder
  * @since 0.5
  */
 class MahoutRecommenderEvaluator {
+	static final Log LOG = LogFactory.getLog(MahoutRecommenderEvaluator.class)
+	
 	static Double evaluateUserBasedRecommender(Boolean hasPreference, 
 																			String similarity, 
 																			Boolean withWeighting, 
 																			String neighborhood, 
 																			Double trainingPercentage, 
 																			Double evaluationPercentage) {
+		LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
 		RandomUtils.useTestSeed()
 		JDBCDataModel model
 		def grailsApp = ApplicationHolder.application
@@ -76,6 +81,8 @@ class MahoutRecommenderEvaluator {
 		}
 		RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
 		
-		return evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage)
+		Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
+		LOG.debug score
+		return score
 	}
 }
