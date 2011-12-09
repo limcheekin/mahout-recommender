@@ -22,7 +22,7 @@
 
 includeTargets << grailsScript("_GrailsBootstrap")
 
-target(main: "Run user-based recommender evaluator") {
+target(main: "Run item-based recommender evaluator") {
 	depends(bootstrap)
 	ant.input(message:"Is the items have preference value?",validargs:"y,n", addproperty:"hasPreference")
 	hasPreference = ant.antProject.properties["hasPreference"] == 'y'
@@ -62,10 +62,7 @@ target(main: "Run user-based recommender evaluator") {
 			case '2':
 				similarity = "TanimotoCoefficient"
 		}
-	}
-	ant.input(message:"Enter value for nearestN neighborhood (ex: 2) or threshold neighborhood (ex: 0.7):", addproperty:"neighborhood")
-	neighborhood = ant.antProject.properties["neighborhood"]
-	
+	}	
 	ant.input(message:"Enter training percentage:", addproperty:"trainingPercentage", 
 		        defaultvalue: grailsApp.config.mahout.recommender.evaluator.trainingPercentage)
 	trainingPercentage = ant.antProject.properties["trainingPercentage"] as Double
@@ -76,8 +73,8 @@ target(main: "Run user-based recommender evaluator") {
 	
 	withWeighting = hasPreference && similaritySelected == '2' | similaritySelected == '4'
 	MahoutRecommenderEvaluator = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderEvaluator")
-	score = MahoutRecommenderEvaluator.evaluateUserBasedRecommender(hasPreference, similarity, 
-					withWeighting, neighborhood, trainingPercentage, evaluationPercentage)
+	score = MahoutRecommenderEvaluator.evaluateItemBasedRecommender(hasPreference, similarity, 
+					withWeighting, trainingPercentage, evaluationPercentage)
 	
 	echo "score = $score"
 }

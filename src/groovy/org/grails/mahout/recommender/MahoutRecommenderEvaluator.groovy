@@ -48,24 +48,7 @@ class MahoutRecommenderEvaluator {
 																			Double evaluationPercentage) {
 		LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
 		RandomUtils.useTestSeed()
-		JDBCDataModel model
-		def grailsApp = ApplicationHolder.application
-		if (hasPreference)
-			model = new MySQLJDBCDataModel(
-					grailsApp.mainContext.dataSource,
-					grailsApp.config.mahout.recommender.preference.table,
-					grailsApp.config.mahout.recommender.preference.userIdColumn,
-					grailsApp.config.mahout.recommender.preference.itemIdColumn,
-					grailsApp.config.mahout.recommender.preference.valueColumn,
-					grailsApp.config.mahout.recommender.preference.lastUpdatedColumn)
-		else
-			model = new MySQLBooleanPrefJDBCDataModel(
-					grailsApp.mainContext.dataSource,
-					grailsApp.config.mahout.recommender.preference.table,
-					grailsApp.config.mahout.recommender.preference.userIdColumn,
-					grailsApp.config.mahout.recommender.preference.itemIdColumn,
-					grailsApp.config.mahout.recommender.preference.lastUpdatedColumn)
-		
+		JDBCDataModel model = getDataModel(hasPreference)
 		Class UserBasedRecommenderBuilder = MahoutRecommenderEvaluator.classLoader.loadClass("org.grails.mahout.recommender.UserBased${similarity}RecommenderBuilder")
 		RecommenderBuilder recommenderBuilder = UserBasedRecommenderBuilder.newInstance()
 		if (similarity == "LogLikelihood" | similarity == "TanimotoCoefficient") {
@@ -85,4 +68,49 @@ class MahoutRecommenderEvaluator {
 		LOG.debug score
 		return score
 	}
+																			
+	static Double evaluateItemBasedRecommender(Boolean hasPreference,
+																						String similarity,
+																						Boolean withWeighting,
+																						Double trainingPercentage,
+																						Double evaluationPercentage) {
+			LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting"
+			RandomUtils.useTestSeed()
+			JDBCDataModel model = getDataModel(hasPreference)
+			Class ItemBasedRecommenderBuilder = MahoutRecommenderEvaluator.classLoader.loadClass("org.grails.mahout.recommender.ItemBased${similarity}RecommenderBuilder")
+			RecommenderBuilder recommenderBuilder = ItemBasedRecommenderBuilder.newInstance()
+			if (similarity == "LogLikelihood" | similarity == "TanimotoCoefficient") {
+				recommenderBuilder.hasPreference = hasPreference
+			}
+			if (withWeighting) {
+				recommenderBuilder.withWeighting = true
+			}
+			
+			RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
+			
+			Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
+			LOG.debug score
+			return score
+	}
+																			
+	private static JDBCDataModel getDataModel(Boolean hasPreference) {
+		def grailsApp = ApplicationHolder.application
+		JDBCDataModel model
+		if (hasPreference)
+			model = new MySQLJDBCDataModel(
+					grailsApp.mainContext.dataSource,
+					grailsApp.config.mahout.recommender.preference.table,
+					grailsApp.config.mahout.recommender.preference.userIdColumn,
+					grailsApp.config.mahout.recommender.preference.itemIdColumn,
+					grailsApp.config.mahout.recommender.preference.valueColumn,
+					grailsApp.config.mahout.recommender.preference.lastUpdatedColumn)
+		else
+			model = new MySQLBooleanPrefJDBCDataModel(
+					grailsApp.mainContext.dataSource,
+					grailsApp.config.mahout.recommender.preference.table,
+					grailsApp.config.mahout.recommender.preference.userIdColumn,
+					grailsApp.config.mahout.recommender.preference.itemIdColumn,
+					grailsApp.config.mahout.recommender.preference.lastUpdatedColumn)
+		return model
+	}																		
 }
