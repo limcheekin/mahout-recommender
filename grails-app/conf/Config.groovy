@@ -4,7 +4,7 @@ log4j = {
     // Example of changing the log pattern for the default console
     // appender:
     //
-    //appenders {
+    // appenders {
     //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     //}
 
@@ -21,6 +21,8 @@ log4j = {
            'net.sf.ehcache.hibernate'
 
     warn   'org.mortbay.log'
+	
+	  info 'org.apache.mahout.cf.taste'
 }
 
 mahout.recommender.preference.table = 'taste_preferences'

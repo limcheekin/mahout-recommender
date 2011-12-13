@@ -20,7 +20,6 @@
  * @since 0.5
  */
 import org.apache.mahout.cf.taste.impl.eval.LoadEvaluator
-import org.apache.log4j.*
 
 includeTargets << new File("${mahoutRecommenderPluginDir}/scripts/_RecommenderBuilderInput.groovy")
 
@@ -37,9 +36,7 @@ target(main: "run load evaluation runner to evaluate performance") {
 
 	MahoutRecommenderEvaluator = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderEvaluator")
 	recommender = MahoutRecommenderEvaluator.getRecommender(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
-
-  Logger.getLogger(LoadEvaluator.class).level = Level.INFO
-  
+ 
 	for (int i = 0; i < loop; i++) {
 		LoadEvaluator.runLoad recommender
 		/* To be supported in 0.6
