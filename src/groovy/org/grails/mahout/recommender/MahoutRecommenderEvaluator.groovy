@@ -160,18 +160,7 @@ class MahoutRecommenderEvaluator {
 	static IRStatistics getIRStatistics(Integer recommenderSelected, Boolean hasPreference, String similarity,
 		Boolean withWeighting, String neighborhood, Double relevanceThreshold, Integer at, Double evaluationPercentage) {
 		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood, relevanceThreshold = $relevanceThreshold, at = $at, evaluationPercentage = $evaluationPercentage"
-		RecommenderBuilder recommenderBuilder
-		
-		switch (recommenderSelected) {
-			case 1:
-			  recommenderBuilder = getUserBasedRecommenderBuilder(hasPreference, similarity, withWeighting, neighborhood)
-			  break
-			case 2:
-				recommenderBuilder = getItemBasedRecommenderBuilder(hasPreference, similarity, withWeighting)
-				break
-			case 3:
-        recommenderBuilder = getSlopeOneRecommenderBuilder(withWeighting)
-		}
+		RecommenderBuilder recommenderBuilder = getRecommenderBuilder(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
 		
 		RandomUtils.useTestSeed()
 
@@ -186,4 +175,33 @@ class MahoutRecommenderEvaluator {
 	  LOG.debug "precision = $stats.precision, recall = $stats.recall"
 	  return stats
 	}
+		
+	private static RecommenderBuilder getRecommenderBuilder(Integer recommenderSelected, Boolean hasPreference, String similarity,
+		Boolean withWeighting, String neighborhood) {
+		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
+		RecommenderBuilder recommenderBuilder
+			
+		switch (recommenderSelected) {
+			case 1:
+			  recommenderBuilder = getUserBasedRecommenderBuilder(hasPreference, similarity, withWeighting, neighborhood)
+			  break
+			case 2:
+				recommenderBuilder = getItemBasedRecommenderBuilder(hasPreference, similarity, withWeighting)
+				break
+			case 3:
+		    recommenderBuilder = getSlopeOneRecommenderBuilder(withWeighting)
+		}
+		
+		return recommenderBuilder
+	}
+		
+	static Recommender getRecommender(Integer recommenderSelected, Boolean hasPreference, String similarity,
+			Boolean withWeighting, String neighborhood) {
+			LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
+			RecommenderBuilder recommenderBuilder = getRecommenderBuilder(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
+	
+			JDBCDataModel model = getDataModel(hasPreference)
+	  
+			return recommenderBuilder.buildRecommender(model)
+		}
 }

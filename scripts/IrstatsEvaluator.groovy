@@ -19,74 +19,12 @@
  *
  * @since 0.5
  */
-
-includeTargets << grailsScript("_GrailsBootstrap")
+ 
+includeTargets << new File("${mahoutRecommenderPluginDir}/scripts/_RecommenderBuilderInput.groovy")
 
 target(main: "Evaluating precision and recall") {
-	depends(bootstrap)
-	
-	println "1) User-based recommender"
-	println "2) Item-based recommender"
-	println "3) Slope-one recommender"
-	ant.input(message:"Select recommender:",validargs:"1,2,3", addproperty:"recommenderSelected")
-	recommenderSelected = ant.antProject.properties["recommenderSelected"] as Integer
-	
-	Boolean hasPreference = true
-	String similarity
-	Boolean withWeighting
-	String neighborhood
-	
-	if (recommenderSelected == 1 || recommenderSelected == 2) {
-		ant.input(message:"Is the items have preference value?",validargs:"y,n", addproperty:"hasPreference")
-		hasPreference = ant.antProject.properties["hasPreference"] == 'y'
-		
-		if (hasPreference) {
-			println "1) Pearson correlation"
-			println "2) Pearson correlation + weighting"
-			println "3) Euclidean distance"
-			println "4) Euclidean distance + weighting"
-			println "5) Log-likelihood"
-			println "6) Tanimoto coefficient"
-			ant.input(message:"Select similarity metric:", validargs:"1,2,3,4,5,6", addproperty:"similaritySelected")
-			similaritySelected = ant.antProject.properties["similaritySelected"]
-			switch (similaritySelected) {
-				case '1':
-				case '2':
-					similarity = "PearsonCorrelation"
-					break
-				case '3':
-				case '4':
-					similarity = "EuclideanDistance"
-					break
-				case '5':
-					similarity = "LogLikelihood"
-					break
-				case '6':
-					similarity = "TanimotoCoefficient"
-			}
-		} else {
-			println "1) Log-likelihood"
-			println "2) Tanimoto coefficient"
-			ant.input(message:"Select similarity metric:", validargs:"1,2", addproperty:"similaritySelected")
-			similaritySelected = ant.antProject.properties["similaritySelected"]
-			switch (similaritySelected) {
-				case '1':
-					similarity = "LogLikelihood"
-					break
-				case '2':
-					similarity = "TanimotoCoefficient"
-			}
-		}	
-		withWeighting = hasPreference && similaritySelected == '2' | similaritySelected == '4'
-		if (recommenderSelected == 1) {
-			ant.input(message:"Enter value for nearestN neighborhood (ex: 2) or threshold neighborhood (ex: 0.7):", addproperty:"neighborhood")
-			neighborhood = ant.antProject.properties["neighborhood"]
-		 }
-	} else { // recommenderSelected == 3
-	  ant.input(message:"Evaluate slope-one recommender with weighting?",validargs:"y,n", addproperty:"withWeighting")
-	  withWeighting = ant.antProject.properties["withWeighting"] == 'y'
-	}
-	
+	depends(acceptInput)
+
 	ant.input(message:"Enter relevance threshold:", addproperty:"relevanceThreshold")
 	relevanceThresholdString = ant.antProject.properties["relevanceThreshold"]
 	relevanceThreshold = relevanceThresholdString ? relevanceThresholdString as Double : Double.NaN
