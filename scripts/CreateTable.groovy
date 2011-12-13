@@ -23,6 +23,30 @@ import groovy.sql.Sql
 
 includeTargets << grailsScript("_GrailsBootstrap")
 
+target(main: "Create table") {
+	depends(bootstrap)
+	println "1) Preference table"
+	println "2) Boolean preference table"
+	println "3) Slope-one diffs table"
+	ant.input(message:"Create table:",validargs:"1,2,3", addproperty:"tableSelected")
+	tableSelected = ant.antProject.properties["tableSelected"] as Integer
+	switch (tableSelected) {
+		case 1:
+			createTable grailsApp.config.mahout.recommender.preference.table,
+					"${mahoutRecommenderPluginDir}/src/sql/mysql_preference.sql"
+		  break
+		case 2:
+			createTable grailsApp.config.mahout.recommender.preference.table,
+					"${mahoutRecommenderPluginDir}/src/sql/mysql_boolean_preference.sql"
+			break
+		case 3:
+			createTable grailsApp.config.mahout.recommender.slopeone.diffs.table,
+					"${mahoutRecommenderPluginDir}/src/sql/mysql_slopeone_diffs.sql"
+	}
+}
+
+setDefaultTarget(main)
+
 createTable = { String tableName, String sqlFile ->
 	Sql sql = new Sql(grailsApp.mainContext.dataSource)
 	sqlStrings = new File(sqlFile).text.trim().split(";")
