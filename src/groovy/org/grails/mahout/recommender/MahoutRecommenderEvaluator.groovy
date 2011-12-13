@@ -26,6 +26,9 @@ import org.apache.mahout.common.RandomUtils
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder
 import org.apache.mahout.cf.taste.eval.RecommenderEvaluator
 import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommenderEvaluator
+import org.apache.mahout.cf.taste.eval.IRStatistics
+import org.apache.mahout.cf.taste.eval.RecommenderIRStatsEvaluator
+import org.apache.mahout.cf.taste.impl.eval.GenericRecommenderIRStatsEvaluator
 import org.apache.mahout.cf.taste.common.TasteException
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.apache.commons.logging.Log
@@ -49,6 +52,20 @@ class MahoutRecommenderEvaluator {
 		LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
 		RandomUtils.useTestSeed()
 		JDBCDataModel model = getDataModel(hasPreference)
+		
+		RecommenderBuilder recommenderBuilder = getUserBasedRecommenderBuilder(hasPreference, similarity, withWeighting, neighborhood)
+		
+		RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
+		
+		Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
+		LOG.debug "score = $score"
+		return score
+	}
+	
+	private static RecommenderBuilder getUserBasedRecommenderBuilder(Boolean hasPreference, 
+																																	String similarity, 
+																																	Boolean withWeighting, 
+																																	String neighborhood) {
 		Class UserBasedRecommenderBuilder = MahoutRecommenderEvaluator.classLoader.loadClass("org.grails.mahout.recommender.UserBased${similarity}RecommenderBuilder")
 		RecommenderBuilder recommenderBuilder = UserBasedRecommenderBuilder.newInstance()
 		if (similarity == "LogLikelihood" | similarity == "TanimotoCoefficient") {
@@ -62,13 +79,9 @@ class MahoutRecommenderEvaluator {
 		} else {
 			recommenderBuilder.nearestN = neighborhood as Integer
 		}
-		RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
-		
-		Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
-		LOG.debug "score = $score"
-		return score
-	}
-																			
+		return recommenderBuilder
+	}				
+																																																																	
 	static Double evaluateItemBasedRecommender(Boolean hasPreference,
 																						String similarity,
 																						Boolean withWeighting,
@@ -77,14 +90,8 @@ class MahoutRecommenderEvaluator {
 			LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
 			RandomUtils.useTestSeed()
 			JDBCDataModel model = getDataModel(hasPreference)
-			Class ItemBasedRecommenderBuilder = MahoutRecommenderEvaluator.classLoader.loadClass("org.grails.mahout.recommender.ItemBased${similarity}RecommenderBuilder")
-			RecommenderBuilder recommenderBuilder = ItemBasedRecommenderBuilder.newInstance()
-			if (similarity == "LogLikelihood" | similarity == "TanimotoCoefficient") {
-				recommenderBuilder.hasPreference = hasPreference
-			}
-			if (withWeighting) {
-				recommenderBuilder.withWeighting = true
-			}
+
+			RecommenderBuilder recommenderBuilder = getItemBasedRecommenderBuilder(hasPreference, similarity, withWeighting)
 			
 			RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
 			
@@ -92,15 +99,29 @@ class MahoutRecommenderEvaluator {
 			LOG.debug "score = $score"
 			return score
 	}
-
+																						
+	private static RecommenderBuilder getItemBasedRecommenderBuilder(Boolean hasPreference,
+																																	String similarity,
+																																	Boolean withWeighting) {
+		Class ItemBasedRecommenderBuilder = MahoutRecommenderEvaluator.classLoader.loadClass("org.grails.mahout.recommender.ItemBased${similarity}RecommenderBuilder")
+		RecommenderBuilder recommenderBuilder = ItemBasedRecommenderBuilder.newInstance()
+		if (similarity == "LogLikelihood" | similarity == "TanimotoCoefficient") {
+			recommenderBuilder.hasPreference = hasPreference
+		}
+		if (withWeighting) {
+			recommenderBuilder.withWeighting = true
+		}
+		return recommenderBuilder
+	}	  
+	
 	static Double evaluateSlopeOneRecommender(Boolean withWeighting,
 																						Double trainingPercentage,
 																						Double evaluationPercentage) {
 			LOG.debug "withWeighting = $withWeighting, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
 			RandomUtils.useTestSeed()
 			JDBCDataModel model = getDataModel(true)
-			RecommenderBuilder recommenderBuilder = new SlopeOneRecommenderBuilder()
-			recommenderBuilder.withWeighting = withWeighting
+			
+			RecommenderBuilder recommenderBuilder = getSlopeOneRecommenderBuilder(withWeighting)
 
 			RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
 			
@@ -108,7 +129,12 @@ class MahoutRecommenderEvaluator {
 			LOG.debug "score = $score"
 			return score
 	}
-	
+																						
+	private static RecommenderBuilder getSlopeOneRecommenderBuilder(Boolean withWeighting) {
+		RecommenderBuilder recommenderBuilder = new SlopeOneRecommenderBuilder()
+		recommenderBuilder.withWeighting = withWeighting
+		return recommenderBuilder
+	}
 																																									
 	static JDBCDataModel getDataModel(Boolean hasPreference) {
 		def grailsApp = ApplicationHolder.application
@@ -129,5 +155,35 @@ class MahoutRecommenderEvaluator {
 					grailsApp.config.mahout.recommender.preference.itemIdColumn,
 					grailsApp.config.mahout.recommender.preference.lastUpdatedColumn)
 		return model
-	}																		
+	}							
+	
+	static IRStatistics getIRStatistics(Integer recommenderSelected, Boolean hasPreference, String similarity,
+		Boolean withWeighting, String neighborhood, Double relevanceThreshold, Integer at, Double evaluationPercentage) {
+		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood, relevanceThreshold = $relevanceThreshold, at = $at, evaluationPercentage = $evaluationPercentage"
+		RecommenderBuilder recommenderBuilder
+		
+		switch (recommenderSelected) {
+			case 1:
+			  recommenderBuilder = getUserBasedRecommenderBuilder(hasPreference, similarity, withWeighting, neighborhood)
+			  break
+			case 2:
+				recommenderBuilder = getItemBasedRecommenderBuilder(hasPreference, similarity, withWeighting)
+				break
+			case 3:
+        recommenderBuilder = getSlopeOneRecommenderBuilder(withWeighting)
+		}
+		
+		RandomUtils.useTestSeed()
+
+		JDBCDataModel model = getDataModel(hasPreference)
+  
+	  RecommenderIRStatsEvaluator evaluator = new GenericRecommenderIRStatsEvaluator()
+
+	  IRStatistics stats = evaluator.evaluate(recommenderBuilder,
+											  null, model, null, at,
+											  relevanceThreshold, evaluationPercentage)
+	  
+	  LOG.debug "precision = $stats.precision, recall = $stats.recall"
+	  return stats
+	}
 }
