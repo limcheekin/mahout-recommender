@@ -22,8 +22,29 @@ log4j = {
 
     warn   'org.mortbay.log'
 	
-	  info 'org.apache.mahout.cf.taste'
+	  info 'org.apache.mahout.cf.taste.impl.eval'
 }
+
+// content negotiation support
+grails.mime.types = [ xml: ['text/xml', 'application/xml'],
+	text: 'text-plain',
+	js: 'text/javascript',
+	rss: 'application/rss+xml',
+	atom: 'application/atom+xml',
+	css: 'text/css',
+	csv: 'text/csv',
+	all: '*/*',
+	json: 'text/json',
+	html: ['text/html','application/xhtml+xml']
+  ]
+
+mahout.recommender.mode = 'config'  // input, config or class
+mahout.recommender.builderClass = 'your.custom.RecommenderBuilder'
+mahout.recommender.hasPreference = true
+mahout.recommender.selected = 1  // 1. user-based, 2. item-based or 3. slope-one
+mahout.recommender.similarity = 'LogLikelihood'
+mahout.recommender.withWeighting = false
+mahout.recommender.neighborhood = 4
 
 mahout.recommender.preference.table = 'taste_preferences'
 mahout.recommender.preference.userIdColumn = 'user_id'
