@@ -33,11 +33,10 @@ target(main: "Evaluating precision and recall") {
 	at = ant.antProject.properties["at"] as Integer
 
 	ant.input(message:"Enter evaluation percentage:", addproperty:"evaluationPercentage",
-		defaultvalue: grailsApp.config.mahout.recommender.evaluator.evaluationPercentage)
+		defaultvalue: MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE)
   evaluationPercentage = ant.antProject.properties["evaluationPercentage"] as Double
 
-	MahoutRecommenderEvaluator = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderEvaluator")
-	stats = MahoutRecommenderEvaluator.getIRStatistics(recommenderSelected, hasPreference, similarity, 
+	stats = MahoutRecommenderSupport.getIRStatistics(recommenderSelected, hasPreference, similarity, 
 					withWeighting, neighborhood, relevanceThreshold, at, evaluationPercentage)
 	
 	echo "precision = $stats.precision, recall = $stats.recall"

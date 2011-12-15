@@ -37,7 +37,7 @@ class SlopeOneRecommenderBuilder implements RecommenderBuilder {
 	
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
 		def config = ApplicationHolder.application.config
-		JDBCDataModel model = MahoutRecommenderEvaluator.getDataModel(true)
+		JDBCDataModel model = MahoutRecommenderSupport.getDataModel(true)
 		DiffStorage diffStorage = new MySQLJDBCDiffStorage(model, 
 				config.mahout.recommender.slopeone.diffs.table,
 				config.mahout.recommender.slopeone.diffs.itemIDAColumn,

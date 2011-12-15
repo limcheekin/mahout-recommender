@@ -29,7 +29,8 @@ class MahoutRecommenderGrailsPlugin {
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
             "grails-app/views/error.gsp",
-			      "grails-app/views/layouts/main.gsp"
+			      "grails-app/views/layouts/main.gsp", 
+				    "grails-app/conf/intro.csv"
     ]
 
     // TODO Fill in these fields

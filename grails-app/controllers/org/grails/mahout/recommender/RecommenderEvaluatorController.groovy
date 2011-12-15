@@ -27,20 +27,20 @@ class RecommenderEvaluatorController {
 	def evaluateUserBasedRecommender = {
 		Double trainingPercentage = grailsApplication.config.mahout.recommender.evaluator.trainingPercentage
 		Double evaluationPercentage = grailsApplication.config.mahout.recommender.evaluator.evaluationPercentage
-		render MahoutRecommenderEvaluator.evaluateUserBasedRecommender(Boolean.valueOf(params.hasPreference), params.similarity,
+		render MahoutRecommenderSupport.evaluateUserBasedRecommender(Boolean.valueOf(params.hasPreference), params.similarity,
 		       Boolean.valueOf(params.withWeighting), params.neighborhood, trainingPercentage, evaluationPercentage)
 	}
 	
 	def evaluateItemBasedRecommender = {
 		Double trainingPercentage = grailsApplication.config.mahout.recommender.evaluator.trainingPercentage
 		Double evaluationPercentage = grailsApplication.config.mahout.recommender.evaluator.evaluationPercentage
-		render MahoutRecommenderEvaluator.evaluateItemBasedRecommender(Boolean.valueOf(params.hasPreference), params.similarity,
+		render MahoutRecommenderSupport.evaluateItemBasedRecommender(Boolean.valueOf(params.hasPreference), params.similarity,
 			   Boolean.valueOf(params.withWeighting), trainingPercentage, evaluationPercentage)
 	}
 	
 	def evaluateSlopeOneRecommender = {
 		Double trainingPercentage = grailsApplication.config.mahout.recommender.evaluator.trainingPercentage
 		Double evaluationPercentage = grailsApplication.config.mahout.recommender.evaluator.evaluationPercentage
-		render MahoutRecommenderEvaluator.evaluateSlopeOneRecommender(Boolean.valueOf(params.withWeighting), trainingPercentage, evaluationPercentage)
+		render MahoutRecommenderSupport.evaluateSlopeOneRecommender(Boolean.valueOf(params.withWeighting), trainingPercentage, evaluationPercentage)
 	}
 }

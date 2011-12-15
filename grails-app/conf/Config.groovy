@@ -23,6 +23,7 @@ log4j = {
     warn   'org.mortbay.log'
 	
 	  info 'org.apache.mahout.cf.taste.impl.eval'
+	  info 'org.grails.mahout.recommender'
 }
 
 // content negotiation support
@@ -38,7 +39,9 @@ grails.mime.types = [ xml: ['text/xml', 'application/xml'],
 	html: ['text/html','application/xhtml+xml']
   ]
 
-mahout.recommender.mode = 'input'  // input, config or class
+mahout.recommender.mode = 'config'  // input, config or class
+mahout.recommender.data.model = 'file'  // file or mysql
+mahout.recommender.data.file = 'intro.csv'
 mahout.recommender.builderClass = 'your.custom.RecommenderBuilder'
 mahout.recommender.hasPreference = true
 mahout.recommender.selected = 1  // 1. user-based, 2. item-based or 3. slope-one

@@ -26,16 +26,15 @@ includeTargets << new File("${mahoutRecommenderPluginDir}/scripts/_RecommenderBu
 target(main: "run load evaluation runner to evaluate performance") {
 	depends(acceptInput)
 	
-	ant.input(message:"Enter number of times the runner execute:", addproperty:"loop", defaultvalue: '5')
+	ant.input(message:"Enter number of times the runner execute:", addproperty:"loop", defaultvalue: MahoutRecommenderConstants.DEFAULT_LOAD_EVALUATION_RUNNER_TIMES)
 	loop = ant.antProject.properties["loop"] as Integer
 
 	/* To be supported in 0.6
-	ant.input(message:"Enter number of recommendations return:", addproperty:"howMany")
+	ant.input(message:"Enter number of recommendations return:", addproperty:"howMany", defaultvalue: MahoutRecommenderConstants.DEFAULT_HOW_MANY)
 	howMany = ant.antProject.properties["howMany"] as Integer
   */
 
-	MahoutRecommenderEvaluator = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderEvaluator")
-	recommender = MahoutRecommenderEvaluator.getRecommender(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
+	recommender = recommender = MahoutRecommenderSupport.getRecommender(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
  
 	for (int i = 0; i < loop; i++) {
 		LoadEvaluator.runLoad recommender

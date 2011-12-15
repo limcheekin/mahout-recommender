@@ -23,4 +23,7 @@ package org.grails.mahout.recommender
 class MahoutRecommenderConstants {
 	static final Integer NUM_TOP_PREFERENCES = 20
 	static final Integer DEFAULT_HOW_MANY = 20
+	static final Integer DEFAULT_LOAD_EVALUATION_RUNNER_TIMES = 3
+	static final Double DEFAULT_EVALUATION_PERCENTAGE = 1.0
+	static final Double DEFAULT_TRAINING_PERCENTAGE = 0.7
 }

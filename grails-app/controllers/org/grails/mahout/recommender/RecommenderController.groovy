@@ -144,7 +144,6 @@ class RecommenderController {
 				return
 			}
 			
-			println "params.n = #${params.n}#, !params.n = ${!params.n}"
 			if (!params.n) {
 				flash.errors = 'Neighborhood cannot be blank.'
 				return
@@ -165,7 +164,7 @@ class RecommenderController {
 				def similarity = params.s
 				def withWeighting = Boolean.valueOf(params.w) 
 				def neighborhood = params.n
-				recommender = MahoutRecommenderEvaluator.getRecommender(recommenderSelected,
+				recommender = MahoutRecommenderSupport.getRecommender(recommenderSelected,
 						hasPreference, similarity, withWeighting, neighborhood)
 				break
 			case 'config':
@@ -174,13 +173,13 @@ class RecommenderController {
 				def similarity = conf.mahout.recommender.similarity
 				def withWeighting = conf.mahout.recommender.withWeighting
 				def neighborhood = conf.mahout.recommender.neighborhood as String
-				recommender = MahoutRecommenderEvaluator.getRecommender(recommenderSelected,
+				recommender = MahoutRecommenderSupport.getRecommender(recommenderSelected,
 						hasPreference, similarity, withWeighting, neighborhood)
 				break
 			case 'class':
 				def recommenderBuilder = Class.forName(conf.mahout.recommender.builderClass).newInstance()
-				def model = MahoutRecommenderEvaluator.getDataModel(conf.mahout.recommender.hasPreference)
-				recommender = recommenderBuilder.buildRecommender()
+				def model = MahoutRecommenderSupport.getDataModel(conf.mahout.recommender.hasPreference)
+				recommender = recommenderBuilder.buildRecommender(model)
 		}
 		return recommender
 	}
