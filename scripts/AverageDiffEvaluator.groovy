@@ -19,23 +19,22 @@
  *
  * @since 0.5
  */
-includeTargets << grailsScript("_GrailsBootstrap")
+ 
+includeTargets << new File("${mahoutRecommenderPluginDir}/scripts/_RecommenderBuilderInput.groovy")
 
-target(main: "Run slope-one recommender evaluator") {
-	depends(bootstrap)
-	ant.input(message:"Run slope-one recommender evaluator with weighting?",validargs:"y,n", addproperty:"withWeighting")
-	withWeighting = ant.antProject.properties["withWeighting"] == 'y'
-	
-	ant.input(message:"Enter training percentage:", addproperty:"trainingPercentage",
-			defaultvalue: grailsApp.config.mahout.recommender.evaluator.trainingPercentage)
+target(main: "Evaluating average difference") {
+	depends(acceptInput)
+
+	ant.input(message:"Enter training percentage:", addproperty:"trainingPercentage", 
+		        defaultvalue: MahoutRecommenderConstants.DEFAULT_TRAINING_PERCENTAGE)
 	trainingPercentage = ant.antProject.properties["trainingPercentage"] as Double
 	
 	ant.input(message:"Enter evaluation percentage:", addproperty:"evaluationPercentage",
-			defaultvalue: grailsApp.config.mahout.recommender.evaluator.evaluationPercentage)
-	evaluationPercentage = ant.antProject.properties["evaluationPercentage"] as Double
-	
-	MahoutRecommenderEvaluator = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderEvaluator")
-	score = MahoutRecommenderEvaluator.evaluateSlopeOneRecommender(withWeighting, trainingPercentage, evaluationPercentage)
+		        defaultvalue: MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE)
+  evaluationPercentage = ant.antProject.properties["evaluationPercentage"] as Double
+
+	score = MahoutRecommenderSupport.evaluateAverageDifference(recommenderSelected, hasPreference, similarity, 
+					withWeighting, neighborhood, trainingPercentage, evaluationPercentage)
 	
 	echo "score = $score"
 }

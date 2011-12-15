@@ -44,18 +44,20 @@ import org.springframework.core.io.ClassPathResource
  */
 class MahoutRecommenderSupport {
 	static final Log LOG = LogFactory.getLog(MahoutRecommenderSupport.class)
-	
-	static Double evaluateUserBasedRecommender(Boolean hasPreference, 
-																			String similarity, 
-																			Boolean withWeighting, 
-																			String neighborhood, 
-																			Double trainingPercentage, 
-																			Double evaluationPercentage) {
-		LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
+																
+	static Double evaluateAverageDifference(Integer recommenderSelected,
+		                                        Boolean hasPreference,
+																						String similarity,
+																						Boolean withWeighting,
+																						String neighborhood,
+																						Double trainingPercentage,
+																						Double evaluationPercentage) {
+		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
 		RandomUtils.useTestSeed()
+		
 		DataModel model = getDataModel(hasPreference)
 		
-		RecommenderBuilder recommenderBuilder = getUserBasedRecommenderBuilder(hasPreference, similarity, withWeighting, neighborhood)
+		RecommenderBuilder recommenderBuilder = getRecommenderBuilder(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
 		
 		RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
 		
@@ -83,25 +85,7 @@ class MahoutRecommenderSupport {
 		}
 		return recommenderBuilder
 	}				
-																																																																	
-	static Double evaluateItemBasedRecommender(Boolean hasPreference,
-																						String similarity,
-																						Boolean withWeighting,
-																						Double trainingPercentage,
-																						Double evaluationPercentage) {
-			LOG.debug "hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
-			RandomUtils.useTestSeed()
-			DataModel model = getDataModel(hasPreference)
-
-			RecommenderBuilder recommenderBuilder = getItemBasedRecommenderBuilder(hasPreference, similarity, withWeighting)
-			
-			RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
-			
-			Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
-			LOG.debug "score = $score"
-			return score
-	}
-																						
+																																																																																			
 	private static RecommenderBuilder getItemBasedRecommenderBuilder(Boolean hasPreference,
 																																	String similarity,
 																																	Boolean withWeighting) {
@@ -115,22 +99,6 @@ class MahoutRecommenderSupport {
 		}
 		return recommenderBuilder
 	}	  
-	
-	static Double evaluateSlopeOneRecommender(Boolean withWeighting,
-																						Double trainingPercentage,
-																						Double evaluationPercentage) {
-			LOG.debug "withWeighting = $withWeighting, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
-			RandomUtils.useTestSeed()
-			DataModel model = getDataModel(true)
-			
-			RecommenderBuilder recommenderBuilder = getSlopeOneRecommenderBuilder(withWeighting)
-
-			RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
-			
-			Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
-			LOG.debug "score = $score"
-			return score
-	}
 																						
 	private static RecommenderBuilder getSlopeOneRecommenderBuilder(Boolean withWeighting) {
 		RecommenderBuilder recommenderBuilder = new SlopeOneRecommenderBuilder()
@@ -152,18 +120,18 @@ class MahoutRecommenderSupport {
 			if (hasPreference)
 				model = new MySQLJDBCDataModel(
 						grailsApp.mainContext.dataSource,
-						conf.mahout.recommender.preference.table,
-						conf.mahout.recommender.preference.userIdColumn,
-						conf.mahout.recommender.preference.itemIdColumn,
-						conf.mahout.recommender.preference.valueColumn,
-						conf.mahout.recommender.preference.lastUpdatedColumn)
+						conf.mahout.recommender.preference.table?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE,
+						conf.mahout.recommender.preference.userIdColumn?:AbstractJDBCDataModel.DEFAULT_USER_ID_COLUMN,
+						conf.mahout.recommender.preference.itemIdColumn?:AbstractJDBCDataModel.DEFAULT_ITEM_ID_COLUMN,
+						conf.mahout.recommender.preference.valueColumn?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_COLUMN,
+						conf.mahout.recommender.preference.timestampColumn?:MahoutRecommenderConstants.DEFAULT_PREFERENCE_TIME_COLUMN)
 			else
 				model = new MySQLBooleanPrefJDBCDataModel(
 						grailsApp.mainContext.dataSource,
-						conf.mahout.recommender.preference.table,
-						conf.mahout.recommender.preference.userIdColumn,
-						conf.mahout.recommender.preference.itemIdColumn,
-						conf.mahout.recommender.preference.lastUpdatedColumn)
+						conf.mahout.recommender.preference.table?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE,
+						conf.mahout.recommender.preference.userIdColumn?:AbstractJDBCDataModel.DEFAULT_USER_ID_COLUMN,
+						conf.mahout.recommender.preference.itemIdColumn?:AbstractJDBCDataModel.DEFAULT_ITEM_ID_COLUMN,
+						conf.mahout.recommender.preference.timestampColumn?:MahoutRecommenderConstants.DEFAULT_PREFERENCE_TIME_COLUMN)
 			break
 		}	
 		return model

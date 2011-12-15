@@ -95,6 +95,18 @@ class RecommenderController {
 		}
 	}
 	
+	def evaluator = { }
+	
+	def evaluateAverageDiff = {
+		Double trainingPercentage = grailsApplication.config.mahout.recommender.evaluator.trainingPercentage?:MahoutRecommenderConstants.DEFAULT_TRAINING_PERCENTAGE
+		Double evaluationPercentage = grailsApplication.config.mahout.recommender.evaluator.evaluationPercentage?:MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE
+		Boolean hasPreference
+		
+		if (params.hasPreference) hasPreference = Boolean.valueOf(params.hasPreference)
+		render MahoutRecommenderSupport.evaluateAverageDifference(params.recommenderSelected as Integer, hasPreference, params.similarity,
+			   Boolean.valueOf(params.withWeighting), params.neighborhood, trainingPercentage, evaluationPercentage)
+	}
+	
 	def settings = { }
 	
 	private validateInput() {

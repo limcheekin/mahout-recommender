@@ -39,8 +39,8 @@ grails.mime.types = [ xml: ['text/xml', 'application/xml'],
 	html: ['text/html','application/xhtml+xml']
   ]
 
-mahout.recommender.mode = 'config'  // input, config or class
-mahout.recommender.data.model = 'file'  // file or mysql
+mahout.recommender.mode = 'input'  // input, config or class
+mahout.recommender.data.model = 'mysql'  // file or mysql
 mahout.recommender.data.file = 'intro.csv'
 mahout.recommender.builderClass = 'your.custom.RecommenderBuilder'
 mahout.recommender.hasPreference = true
@@ -53,7 +53,7 @@ mahout.recommender.preference.table = 'taste_preferences'
 mahout.recommender.preference.userIdColumn = 'user_id'
 mahout.recommender.preference.itemIdColumn = 'item_id'
 mahout.recommender.preference.valueColumn = 'preference'
-mahout.recommender.preference.lastUpdatedColumn = 'last_updated'
+mahout.recommender.preference.timestampColumn = 'last_updated'
 mahout.recommender.slopeone.diffs.table = 'taste_slopeone_diffs'
 mahout.recommender.slopeone.diffs.itemIDAColumn = 'item_id_a'
 mahout.recommender.slopeone.diffs.itemIDBColumn = 'item_id_b'
