@@ -16,6 +16,7 @@ package org.grails.mahout.recommender
 
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder
 import org.apache.mahout.cf.taste.common.Weighting
+import org.apache.mahout.cf.taste.impl.recommender.slopeone.MemoryDiffStorage;
 import org.apache.mahout.cf.taste.impl.recommender.slopeone.SlopeOneRecommender
 import org.apache.mahout.cf.taste.impl.recommender.slopeone.jdbc.MySQLJDBCDiffStorage
 import org.apache.mahout.cf.taste.recommender.Recommender
@@ -23,6 +24,8 @@ import org.apache.mahout.cf.taste.recommender.slopeone.DiffStorage
 import org.apache.mahout.cf.taste.model.DataModel
 import org.apache.mahout.cf.taste.common.TasteException
 import org.apache.mahout.cf.taste.model.JDBCDataModel
+import org.apache.mahout.cf.taste.impl.recommender.slopeone.jdbc.AbstractJDBCDiffStorage
+import org.apache.mahout.cf.taste.impl.recommender.slopeone.MemoryDiffStorage
 
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 
@@ -36,16 +39,26 @@ class SlopeOneRecommenderBuilder implements RecommenderBuilder {
 	Boolean withWeighting
 	
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
-		def config = ApplicationHolder.application.config
-		JDBCDataModel model = MahoutRecommenderSupport.getDataModel(true)
-		DiffStorage diffStorage = new MySQLJDBCDiffStorage(model, 
-				config.mahout.recommender.slopeone.diffs.table,
-				config.mahout.recommender.slopeone.diffs.itemIDAColumn,
-				config.mahout.recommender.slopeone.diffs.itemIDBColumn,
-				config.mahout.recommender.slopeone.diffs.countColumn,
-				config.mahout.recommender.slopeone.diffs.avgColumn,
-				config.mahout.recommender.slopeone.diffs.stdevColumn,
-				config.mahout.recommender.slopeone.diffs.minDiffCount)
+		def conf = ApplicationHolder.application.config
+		def model 
+		DiffStorage diffStorage
+		switch (conf.mahout.recommender.data.model) {
+		case 'file':
+		  model = dataModel
+		  diffStorage = new MemoryDiffStorage(
+			  model, withWeighting ? Weighting.WEIGHTED : Weighting.UNWEIGHTED, Long.MAX_VALUE);
+			break
+		case 'mysql':
+			model = MahoutRecommenderSupport.getDataModel(true)
+			diffStorage = new MySQLJDBCDiffStorage(model, 
+					conf.mahout.recommender.slopeone.diffs.table?:AbstractJDBCDiffStorage.DEFAULT_DIFF_TABLE,
+					conf.mahout.recommender.slopeone.diffs.itemIDAColumn?:AbstractJDBCDiffStorage.DEFAULT_ITEM_A_COLUMN,
+					conf.mahout.recommender.slopeone.diffs.itemIDBColumn?:AbstractJDBCDiffStorage.DEFAULT_ITEM_B_COLUMN,
+					conf.mahout.recommender.slopeone.diffs.countColumn?:AbstractJDBCDiffStorage.DEFAULT_COUNT_COLUMN,
+					conf.mahout.recommender.slopeone.diffs.avgColumn?:AbstractJDBCDiffStorage.DEFAULT_AVERAGE_DIFF_COLUMN,
+					conf.mahout.recommender.slopeone.diffs.stdevColumn?:AbstractJDBCDiffStorage.DEFAULT_STDEV_COLUMN,
+					conf.mahout.recommender.slopeone.diffs.minDiffCount?:MahoutRecommenderConstants.DEFAULT_SLOPEONE_DIFFS_MIN_COUNT)
+		}
 		Recommender recommender
 		if (withWeighting) {
 			recommender = new SlopeOneRecommender(model, Weighting.WEIGHTED, Weighting.WEIGHTED, diffStorage)

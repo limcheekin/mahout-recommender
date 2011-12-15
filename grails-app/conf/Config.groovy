@@ -40,7 +40,7 @@ grails.mime.types = [ xml: ['text/xml', 'application/xml'],
   ]
 
 mahout.recommender.mode = 'input'  // input, config or class
-mahout.recommender.data.model = 'mysql'  // file or mysql
+mahout.recommender.data.model = 'file'  // file or mysql
 mahout.recommender.data.file = 'intro.csv'
 mahout.recommender.builderClass = 'your.custom.RecommenderBuilder'
 mahout.recommender.hasPreference = true
