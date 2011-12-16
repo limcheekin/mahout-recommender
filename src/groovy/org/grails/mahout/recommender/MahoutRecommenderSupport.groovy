@@ -170,19 +170,31 @@ class MahoutRecommenderSupport {
 		Boolean withWeighting, String neighborhood) {
 		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
 		RecommenderBuilder recommenderBuilder
-			
-		switch (recommenderSelected) {
-			case 1:
-			  recommenderBuilder = getUserBasedRecommenderBuilder(hasPreference, similarity, withWeighting, neighborhood)
-			  break
-			case 2:
-				recommenderBuilder = getItemBasedRecommenderBuilder(hasPreference, similarity, withWeighting)
-				break
-			case 3:
-		    recommenderBuilder = getSlopeOneRecommenderBuilder(withWeighting)
-		}
+		def conf = ApplicationHolder.application.config
+		String mode = conf.mahout.recommender.mode?:MahoutRecommenderConstants.DEFAULT_MODE
 		
+		switch (mode) {
+		case 'input':
+		case 'config':	
+			switch (recommenderSelected) {
+				case 1:
+				  recommenderBuilder = getUserBasedRecommenderBuilder(hasPreference, similarity, withWeighting, neighborhood)
+				  break
+				case 2:
+					recommenderBuilder = getItemBasedRecommenderBuilder(hasPreference, similarity, withWeighting)
+					break
+				case 3:
+			    recommenderBuilder = getSlopeOneRecommenderBuilder(withWeighting)
+			}
+			break
+		case 'class':
+		  recommenderBuilder = getCustomRecommenderBuilder(conf)
+		}	
 		return recommenderBuilder
+	}
+		
+	private RecommenderBuilder getCustomRecommenderBuilder(conf) {
+		MahoutRecommenderSupport.classLoader.loadClass(conf.mahout.recommender.builderClass).newInstance()
 	}
 		
 	Recommender getRecommender(Integer recommenderSelected, Boolean hasPreference, String similarity,

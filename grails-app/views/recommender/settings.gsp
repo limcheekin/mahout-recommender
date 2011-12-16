@@ -42,11 +42,11 @@
 
 <form action="../recommender.html" method="post" >
 <div class="list">
-<table style="width: 60%">
+<table style="width: 80%">
 	<tbody>
 	<tr>
-		<td>User ID.</td>
-		<td><g:textField name="userID" value="${params.userID}" style="width: 100%" /></td>
+		<td style="width: 40%">User ID.</td>
+		<td style="width: 60%"><g:textField name="userID" value="${params.userID}" style="width: 100%" /></td>
 	</tr>
 	<tr>
 		<td>Number of recommendations</td>
@@ -116,7 +116,7 @@
 	</g:if>
 	<g:else>
 	<tr>
-		<td>Recommender Builder Class</td>
+		<td>Recommender builder class</td>
 		<td>
 		    <span class="valueStyle">${conf.mahout.recommender.builderClass}</span>
 		</td>

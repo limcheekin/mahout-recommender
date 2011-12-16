@@ -192,9 +192,8 @@ class RecommenderController {
 						hasPreference, similarity, withWeighting, neighborhood)
 				break
 			case 'class':
-				def recommenderBuilder = Class.forName(conf.mahout.recommender.builderClass).newInstance()
-				def model = mahoutRecommenderSupport.getDataModel(conf.mahout.recommender.hasPreference)
-				recommender = recommenderBuilder.buildRecommender(model)
+				def hasPreference = conf.mahout.recommender.hasPreference
+				recommender = mahoutRecommenderSupport.getRecommender(null, hasPreference, null, null, null)
 		}
 		return recommender
 	}
