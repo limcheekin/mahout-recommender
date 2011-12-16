@@ -44,7 +44,17 @@ import org.springframework.core.io.ClassPathResource
  */
 class MahoutRecommenderSupport {
 	static final Log LOG = LogFactory.getLog(MahoutRecommenderSupport.class)
-																
+	
+	static String validateEnvironmentSetup() {
+		def conf = ApplicationHolder.application.config
+		String model = conf.mahout.recommender.data.model?:MahoutRecommenderConstants.DEFAULT_DATA_MODEL
+		String error = null
+		if (model == 'file' && !conf.mahout.recommender.data.file) {
+			error = "Data model supported is 'file'. Please specify data file name for conf.mahout.recommenderd.data.file in Config.groovy." 
+		}
+		return error
+	}
+	
 	static Double evaluateAverageDifference(Integer recommenderSelected,
 		                                        Boolean hasPreference,
 																						String similarity,

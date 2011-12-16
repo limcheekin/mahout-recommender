@@ -22,7 +22,6 @@
 
 includeTargets << grailsScript("_GrailsBootstrap")
 
-
 target(acceptInput: "Accept recommender builder input") {
 	depends(bootstrap)
 	hasPreference = false
@@ -30,27 +29,21 @@ target(acceptInput: "Accept recommender builder input") {
 	withWeighting = false  
 	neighborhood = null
 	recommenderSelected = null 
-	def conf = grailsApp.config
+	conf = grailsApp.config
 	MahoutRecommenderSupport = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderSupport")
 	MahoutRecommenderConstants = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderConstants")
 	
 	if (!conf.mahout.recommender.data.model) {
-		ant.input(message:"Enter data model:",validargs:"file,mysql", addproperty:"dataModel")
+		ant.input(message:"Enter data model:",validargs:"file,mysql", addproperty:"dataModel", defaultvalue: MahoutRecommenderConstants.DEFAULT_DATA_MODEL)
 		conf.mahout.recommender.data.model = ant.antProject.properties["dataModel"]
-	 } else {
-	  echo "data model: ${conf.mahout.recommender.data.model}"
-	 }
+	 } 
 	
 	if (conf.mahout.recommender.data.model == 'file' && !conf.mahout.recommender.data.file) {
-		ant.input(message:"Enter data file name:", addproperty:"file", defaultvalue: 'data.csv')
+		ant.input(message:"Enter data file name:", addproperty:"file", defaultvalue: MahoutRecommenderConstants.DEFAULT_DATA_FILE)
 		conf.mahout.recommender.data.file = ant.antProject.properties["file"]
 	 }
 	
-	if (conf.mahout.recommender.data.model == 'file' && conf.mahout.recommender.data.file) {
-		echo "data file name: ${conf.mahout.recommender.data.file}"
-	}
-		
-	switch (conf.mahout.recommender.mode) {
+	switch (conf.mahout.recommender.mode?:MahoutRecommenderConstants.DEFAULT_MODE) {
 		case 'input':
 			println "1) User-based recommender"
 			println "2) Item-based recommender"
@@ -108,6 +101,7 @@ target(acceptInput: "Accept recommender builder input") {
 			  ant.input(message:"Evaluate slope-one recommender with weighting?",validargs:"y,n", addproperty:"withWeighting")
 			  withWeighting = ant.antProject.properties["withWeighting"] == 'y'
 			}
+			printInput()
 		  break
 		case 'config':
 			recommenderSelected = conf.mahout.recommender.selected
@@ -115,26 +109,45 @@ target(acceptInput: "Accept recommender builder input") {
 			similarity = conf.mahout.recommender.similarity
 			withWeighting = conf.mahout.recommender.withWeighting
 			neighborhood = conf.mahout.recommender.neighborhood as String
-			
-			switch (recommenderSelected) {
-				case 1:
-					echo "recommender: User-based recommender"
-					break
-				case 2:
-					echo "recommender: Item-based recommender"
-					break
-				case 3:
-					echo "recommender: Slope-one recommender"
-					break
-			}
-			echo "has preference?: $hasPreference"
-			echo "similarity metric: $similarity"
-			echo "with weighting?: $withWeighting"
-			echo "neighborhood: $neighborhood"
+			printInput()
 			break
 		case 'class':
 		  hasPreference = conf.mahout.recommender.hasPreference
-		  echo "has preference?: $hasPreference"
-		  echo "recommender builder class: ${conf.mahout.recommender.builderClass}"
+		  printOpenLine()
+		  println "\t\tdata model: ${conf.mahout.recommender.data.model}"
+		  println "\t\tdata file name: ${conf.mahout.recommender.data.file}"
+		  println "\t\thas preference?: $hasPreference"
+		  println "\t\trecommender builder class: ${conf.mahout.recommender.builderClass}"
+		  printCloseLine()
 	}
+}
+
+private printOpenLine() {
+  println "\n\t***************** Recommender Settings *****************\n"
+}
+
+private printCloseLine() {
+	println "\n\t********************************************************\n"
+}
+
+private printInput() {
+	printOpenLine()
+	println "\t\tdata model: ${conf.mahout.recommender.data.model}"
+	println "\t\tdata file name: ${conf.mahout.recommender.data.file}"
+	switch (recommenderSelected) {
+		case 1:
+			println "\t\trecommender: User-based recommender"
+			break
+		case 2:
+			println "\t\trecommender: Item-based recommender"
+			break
+		case 3:
+			println "\t\trecommender: Slope-one recommender"
+			break
+	}
+	println "\t\thas preference?: $hasPreference"
+	println "\t\tsimilarity metric: $similarity"
+	println "\t\twith weighting?: $withWeighting"
+	println "\t\tneighborhood: $neighborhood"
+	printCloseLine()
 }

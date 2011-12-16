@@ -28,7 +28,9 @@ class RecommenderController {
 		def items
 		def numOfTopPrefs
 		def sortedPrefs
-		validateInput()
+		
+		flash.errors = MahoutRecommenderSupport.validateEnvironmentSetup()
+		if (!flash.errors) validateInput()
 		if (!flash.errors) {
 			recommender = getRecommender()
 			userID = params.userID as Long
@@ -169,7 +171,7 @@ class RecommenderController {
 	private getRecommender() {
 		def recommender
 		def conf = grailsApplication.config
-		switch (conf.mahout.recommender.mode) {
+		switch (conf.mahout.recommender.mode?:MahoutRecommenderConstants.DEFAULT_MODE) {
 			case 'input':
 				def recommenderSelected = params.r as Integer
 				def hasPreference = Boolean.valueOf(params.p) 

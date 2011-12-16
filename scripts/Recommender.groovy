@@ -29,7 +29,7 @@ target(main: "run recommender") {
 	ant.input(message:"Enter user id:", addproperty:"userId")
 	userID = ant.antProject.properties["userId"] as Long
 
-	ant.input(message:"Enter number of recommendations return:", addproperty:"howMany", defaultvalue: MahoutRecommenderConstants.DEFAULT_HOW_MANY)
+	ant.input(message:"Enter expected number of recommendations return:", addproperty:"howMany", defaultvalue: MahoutRecommenderConstants.DEFAULT_HOW_MANY)
 	howMany = ant.antProject.properties["howMany"] as Integer
  
 	recommender = MahoutRecommenderSupport.getRecommender(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
@@ -38,7 +38,7 @@ target(main: "run recommender") {
 	
 	println "Recommended Item(s): $items.size"
 	items.eachWithIndex { item, i ->
-		println "\t$i) $item.itemID - $item.value"
+		println "\t${++i}) $item.itemID - $item.value"
 	}
 }
 

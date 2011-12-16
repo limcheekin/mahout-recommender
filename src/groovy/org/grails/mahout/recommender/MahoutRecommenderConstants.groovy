@@ -24,8 +24,11 @@ class MahoutRecommenderConstants {
 	static final Integer NUM_TOP_PREFERENCES = 20
 	static final Integer DEFAULT_HOW_MANY = 20
 	static final Integer DEFAULT_LOAD_EVALUATION_RUNNER_TIMES = 3
+	static final Integer DEFAULT_SLOPEONE_DIFFS_MIN_COUNT = 2
 	static final Double DEFAULT_EVALUATION_PERCENTAGE = 1.0
 	static final Double DEFAULT_TRAINING_PERCENTAGE = 0.7
-	static final Integer DEFAULT_SLOPEONE_DIFFS_MIN_COUNT = 2
 	static final String DEFAULT_PREFERENCE_TIME_COLUMN = 'last_updated'
+	static final String DEFAULT_MODE = 'input'
+	static final String DEFAULT_DATA_MODEL = 'file'
+	static final String DEFAULT_DATA_FILE = 'data.csv'
 }
