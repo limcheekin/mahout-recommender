@@ -115,7 +115,8 @@ target(acceptInput: "Accept recommender builder input") {
 		  hasPreference = conf.mahout.recommender.hasPreference
 		  printOpenLine()
 		  println "\t\tdata model: ${conf.mahout.recommender.data.model}"
-		  println "\t\tdata file name: ${conf.mahout.recommender.data.file}"
+		  if (conf.mahout.recommender.data.model == 'file')
+		    println "\t\tdata file name: ${conf.mahout.recommender.data.file}"
 		  println "\t\thas preference?: $hasPreference"
 		  println "\t\trecommender builder class: ${conf.mahout.recommender.builderClass}"
 		  printCloseLine()
@@ -133,7 +134,8 @@ private printCloseLine() {
 private printInput() {
 	printOpenLine()
 	println "\t\tdata model: ${conf.mahout.recommender.data.model}"
-	println "\t\tdata file name: ${conf.mahout.recommender.data.file}"
+	if (conf.mahout.recommender.data.model == 'file')
+	  println "\t\tdata file name: ${conf.mahout.recommender.data.file}"
 	switch (recommenderSelected) {
 		case 1:
 			println "\t\trecommender: User-based recommender"
