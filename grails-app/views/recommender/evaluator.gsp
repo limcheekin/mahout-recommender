@@ -307,7 +307,7 @@ several similarity metrics, and using a nearest-n user neighborhood.
 </div>
 <h4 id="thresholdNeighborhoodWithPrefHeader">Threshold-based neighborhood</h4>
 <div class="list">Average absolute difference in estimated and
-actual preferences when evaluating a userbased recommender using one of
+actual preferences when evaluating a user-based recommender using one of
 several similarity metrics, and using a threshold-based user
 neighborhood. 
 <table id="thresholdNeighborhoodWithPref">

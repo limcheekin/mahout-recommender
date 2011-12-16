@@ -19,7 +19,8 @@
  */
  --%>
 <%@ page import="org.grails.mahout.recommender.MahoutRecommenderConstants" %>
-
+<g:set var="conf" value="${grailsApplication.config}" />
+<g:set var="mode" value="${conf.mahout.recommender.mode?:MahoutRecommenderConstants.DEFAULT_MODE}" />
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -27,18 +28,19 @@
 <title>Recommender Settings</title>
 <style type="text/css">
      .valueStyle { font-weight: bold }
+     select { width: 100% }
+     input[type=text] { width: 98% }
 </style>
 </head>
 <body>
 <div class="nav">
   <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label" /></a></span>
 </div>
-<div class="body">
+<div class="body" style="width: 70%">
 <h1>Recommender Settings</h1>
 <g:if test="${flash.errors}">
   <div class="errors">${flash.errors}</div>
 </g:if>
-<g:set var="conf" value="${grailsApplication.config}" />
 
 <form action="../recommender.html" method="post" >
 <div class="list">
@@ -46,32 +48,32 @@
 	<tbody>
 	<tr>
 		<td style="width: 40%">User ID.</td>
-		<td style="width: 60%"><g:textField name="userID" value="${params.userID}" style="width: 100%" /></td>
+		<td style="width: 60%"><g:textField name="userID" value="${params.userID}" /></td>
 	</tr>
 	<tr>
 		<td>Number of recommendations</td>
-		<td><g:textField name="howMany" value="${params.howMany?:MahoutRecommenderConstants.DEFAULT_HOW_MANY}" style="width: 100%" /></td>
+		<td><g:textField name="howMany" value="${params.howMany?:MahoutRecommenderConstants.DEFAULT_HOW_MANY}" /></td>
 	</tr>
 	<tr>
 		<td>Has preference value?</td>
 		<td>
-		<g:if test="${conf.mahout.recommender.mode == 'input'}">
+		<g:if test="${mode == 'input'}">
 		  <g:set var="yesAndNo" value="${['true':'Yes', 'false':'No'].entrySet()}" />
 		  <g:select name="p" from="${yesAndNo}" value="${params.p}" 
-		  optionKey="key" optionValue="value" style="width: 100%" />
+		  optionKey="key" optionValue="value" />
 		</g:if>
 		<g:else>
 		    <span class="valueStyle">${conf.mahout.recommender.hasPreference}</span>
 		</g:else>		  
 		</td>
 	</tr>			
-	<g:if test="${conf.mahout.recommender.mode != 'class'}">
+	<g:if test="${mode != 'class'}">
 	<tr>
 		<td>Recommender</td>
 		<td>
-		<g:if test="${conf.mahout.recommender.mode == 'input'}">
+		<g:if test="${mode == 'input'}">
 		  <g:select name="r" from="${[1:'1. User-based recommender', 2:'2. Item-based recommender', 3:'3. Slope-one recommender'].entrySet()}" 
-		  value="${params.r}" optionKey="key" optionValue="value" style="width: 100%" />
+		  value="${params.r}" optionKey="key" optionValue="value" />
 		</g:if>
 		<g:else>
 		    <span class="valueStyle">${conf.mahout.recommender.selected}</span>
@@ -81,9 +83,9 @@
 	<tr>
 		<td>Similarity metric</td>
 		<td>
-		<g:if test="${conf.mahout.recommender.mode == 'input'}">
+		<g:if test="${mode == 'input'}">
 		  <g:select name="s" from="${[PearsonCorrelation:'Pearson correlation', EuclideanDistance:'Euclidean distance', LogLikelihood:'Log-likelihood', TanimotoCoefficient:'Tanimoto coefficient'].entrySet()}" 
-		  value="${params.s}" optionKey="key" optionValue="value" style="width: 100%" />
+		  value="${params.s}" optionKey="key" optionValue="value" />
 		</g:if>
 		<g:else>
 		    <span class="valueStyle">${conf.mahout.recommender.similarity}</span>
@@ -93,9 +95,9 @@
 	<tr>
 		<td>With weighting?</td>
 		<td>
-		<g:if test="${conf.mahout.recommender.mode == 'input'}">
+		<g:if test="${mode == 'input'}">
 		  <g:select name="w" from="${yesAndNo}" value="${params.w}" 
-		  optionKey="key" optionValue="value" style="width: 100%" />
+		  optionKey="key" optionValue="value" />
 		</g:if>
 		<g:else>
 		    <span class="valueStyle">${conf.mahout.recommender.withWeighting}</span>
@@ -105,8 +107,8 @@
 	<tr>
 		<td>Neighborhood (ex. 0.85 or 3)</td>
 		<td>
-		<g:if test="${conf.mahout.recommender.mode == 'input'}">
-		  <g:textField name="n" value="${params.n}" style="width: 100%" />
+		<g:if test="${mode == 'input'}">
+		  <g:textField name="n" value="${params.n}" />
 		</g:if>
 		<g:else>
 		    <span class="valueStyle">${conf.mahout.recommender.neighborhood}</span>

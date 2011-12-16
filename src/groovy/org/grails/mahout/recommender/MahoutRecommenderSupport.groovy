@@ -50,18 +50,18 @@ class MahoutRecommenderSupport {
 		String model = conf.mahout.recommender.data.model?:MahoutRecommenderConstants.DEFAULT_DATA_MODEL
 		String error = null
 		if (model == 'file' && !conf.mahout.recommender.data.file) {
-			error = "Data model supported is 'file'. Please specify data file name for conf.mahout.recommenderd.data.file in Config.groovy." 
+			error = "Data model supported is 'file'. Please specify data file name for conf.mahout.recommenderd.data.file in Config.groovy."
 		}
 		return error
 	}
 	
 	Double evaluateAverageDifference(Integer recommenderSelected,
-		                                        Boolean hasPreference,
-																						String similarity,
-																						Boolean withWeighting,
-																						String neighborhood,
-																						Double trainingPercentage,
-																						Double evaluationPercentage) {
+	                                 Boolean hasPreference,
+	                                 String similarity,
+	                                 Boolean withWeighting,
+	                                 String neighborhood,
+	                                 Double trainingPercentage,
+	                                 Double evaluationPercentage) {
 		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood, trainingPercentage = $trainingPercentage, evaluationPercentage = $evaluationPercentage"
 		RandomUtils.useTestSeed()
 		
@@ -72,14 +72,16 @@ class MahoutRecommenderSupport {
 		RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator()
 		
 		Double score = evaluator.evaluate(recommenderBuilder, null, model, trainingPercentage, evaluationPercentage).round(2)
+		
 		LOG.debug "score = $score"
+		
 		return score
 	}
 	
 	private RecommenderBuilder getUserBasedRecommenderBuilder(Boolean hasPreference, 
-																																	String similarity, 
-																																	Boolean withWeighting, 
-																																	String neighborhood) {
+	                                            String similarity, 
+	                                            Boolean withWeighting, 
+	                                            String neighborhood) {
 		Class UserBasedRecommenderBuilder = MahoutRecommenderSupport.classLoader.loadClass("org.grails.mahout.recommender.UserBased${similarity}RecommenderBuilder")
 		RecommenderBuilder recommenderBuilder = UserBasedRecommenderBuilder.newInstance()
 		if (similarity == "LogLikelihood" | similarity == "TanimotoCoefficient") {
@@ -95,10 +97,10 @@ class MahoutRecommenderSupport {
 		}
 		return recommenderBuilder
 	}				
-																																																																																			
+	
 	private RecommenderBuilder getItemBasedRecommenderBuilder(Boolean hasPreference,
-																																	String similarity,
-																																	Boolean withWeighting) {
+	                                               String similarity,
+	                                               Boolean withWeighting) {
 		Class ItemBasedRecommenderBuilder = MahoutRecommenderSupport.classLoader.loadClass("org.grails.mahout.recommender.ItemBased${similarity}RecommenderBuilder")
 		RecommenderBuilder recommenderBuilder = ItemBasedRecommenderBuilder.newInstance()
 		if (similarity == "LogLikelihood" | similarity == "TanimotoCoefficient") {
@@ -109,101 +111,101 @@ class MahoutRecommenderSupport {
 		}
 		return recommenderBuilder
 	}	  
-																						
+	
 	private RecommenderBuilder getSlopeOneRecommenderBuilder(Boolean withWeighting) {
 		RecommenderBuilder recommenderBuilder = new SlopeOneRecommenderBuilder()
 		recommenderBuilder.withWeighting = withWeighting
 		return recommenderBuilder
 	}
-																																									
+	
 	DataModel getDataModel(Boolean hasPreference) {
 		def grailsApp = ApplicationHolder.application
 		def conf = grailsApp.config
 		DataModel model
 		switch (conf.mahout.recommender.data.model?:MahoutRecommenderConstants.DEFAULT_DATA_MODEL) {
-		case 'file':
-		  String fileName = conf.mahout.recommender.data.file
-		  LOG.info "Instanstiate file model for ${fileName}"
-		  model = new FileDataModel(new ClassPathResource(fileName).file)
-		  break
-		case 'mysql':
-			if (hasPreference)
-				model = new MySQLJDBCDataModel(
-						grailsApp.mainContext.dataSource,
-						conf.mahout.recommender.preference.table?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE,
-						conf.mahout.recommender.preference.userIdColumn?:AbstractJDBCDataModel.DEFAULT_USER_ID_COLUMN,
-						conf.mahout.recommender.preference.itemIdColumn?:AbstractJDBCDataModel.DEFAULT_ITEM_ID_COLUMN,
-						conf.mahout.recommender.preference.valueColumn?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_COLUMN,
-						conf.mahout.recommender.preference.timestampColumn?:MahoutRecommenderConstants.DEFAULT_PREFERENCE_TIME_COLUMN)
-			else
-				model = new MySQLBooleanPrefJDBCDataModel(
-						grailsApp.mainContext.dataSource,
-						conf.mahout.recommender.preference.table?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE,
-						conf.mahout.recommender.preference.userIdColumn?:AbstractJDBCDataModel.DEFAULT_USER_ID_COLUMN,
-						conf.mahout.recommender.preference.itemIdColumn?:AbstractJDBCDataModel.DEFAULT_ITEM_ID_COLUMN,
-						conf.mahout.recommender.preference.timestampColumn?:MahoutRecommenderConstants.DEFAULT_PREFERENCE_TIME_COLUMN)
-			break
+			case 'file':
+				String fileName = conf.mahout.recommender.data.file
+				LOG.info "Instanstiate file model for ${fileName}"
+				model = new FileDataModel(new ClassPathResource(fileName).file)
+				break
+			case 'mysql':
+				if (hasPreference)
+					model = new MySQLJDBCDataModel(
+							grailsApp.mainContext.dataSource,
+							conf.mahout.recommender.preference.table?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE,
+							conf.mahout.recommender.preference.userIdColumn?:AbstractJDBCDataModel.DEFAULT_USER_ID_COLUMN,
+							conf.mahout.recommender.preference.itemIdColumn?:AbstractJDBCDataModel.DEFAULT_ITEM_ID_COLUMN,
+							conf.mahout.recommender.preference.valueColumn?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_COLUMN,
+							conf.mahout.recommender.preference.timestampColumn?:MahoutRecommenderConstants.DEFAULT_PREFERENCE_TIME_COLUMN)
+				else
+					model = new MySQLBooleanPrefJDBCDataModel(
+							grailsApp.mainContext.dataSource,
+							conf.mahout.recommender.preference.table?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE,
+							conf.mahout.recommender.preference.userIdColumn?:AbstractJDBCDataModel.DEFAULT_USER_ID_COLUMN,
+							conf.mahout.recommender.preference.itemIdColumn?:AbstractJDBCDataModel.DEFAULT_ITEM_ID_COLUMN,
+							conf.mahout.recommender.preference.timestampColumn?:MahoutRecommenderConstants.DEFAULT_PREFERENCE_TIME_COLUMN)
+				break
 		}	
 		return model
 	}							
 	
 	IRStatistics getIRStatistics(Integer recommenderSelected, Boolean hasPreference, String similarity,
-		Boolean withWeighting, String neighborhood, Double relevanceThreshold, Integer at, Double evaluationPercentage) {
+	                             Boolean withWeighting, String neighborhood, Double relevanceThreshold, Integer at, Double evaluationPercentage) {
 		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood, relevanceThreshold = $relevanceThreshold, at = $at, evaluationPercentage = $evaluationPercentage"
 		RecommenderBuilder recommenderBuilder = getRecommenderBuilder(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
 		
 		RandomUtils.useTestSeed()
-
-		DataModel model = getDataModel(hasPreference)
-  
-	  RecommenderIRStatsEvaluator evaluator = new GenericRecommenderIRStatsEvaluator()
-
-	  IRStatistics stats = evaluator.evaluate(recommenderBuilder,
-											  null, model, null, at,
-											  relevanceThreshold, evaluationPercentage)
-	  
-	  LOG.debug "precision = $stats.precision, recall = $stats.recall"
-	  return stats
-	}
 		
+		DataModel model = getDataModel(hasPreference)
+		
+		RecommenderIRStatsEvaluator evaluator = new GenericRecommenderIRStatsEvaluator()
+		
+		IRStatistics stats = evaluator.evaluate(recommenderBuilder,
+				null, model, null, at,
+				relevanceThreshold, evaluationPercentage)
+		
+		LOG.debug "precision = $stats.precision, recall = $stats.recall"
+		return stats
+	}
+	
 	private RecommenderBuilder getRecommenderBuilder(Integer recommenderSelected, Boolean hasPreference, String similarity,
-		Boolean withWeighting, String neighborhood) {
+	                                                 Boolean withWeighting, String neighborhood) {
 		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
 		RecommenderBuilder recommenderBuilder
 		def conf = ApplicationHolder.application.config
 		String mode = conf.mahout.recommender.mode?:MahoutRecommenderConstants.DEFAULT_MODE
 		
 		switch (mode) {
-		case 'input':
-		case 'config':	
-			switch (recommenderSelected) {
-				case 1:
-				  recommenderBuilder = getUserBasedRecommenderBuilder(hasPreference, similarity, withWeighting, neighborhood)
-				  break
-				case 2:
-					recommenderBuilder = getItemBasedRecommenderBuilder(hasPreference, similarity, withWeighting)
-					break
-				case 3:
-			    recommenderBuilder = getSlopeOneRecommenderBuilder(withWeighting)
-			}
-			break
-		case 'class':
-		  recommenderBuilder = getCustomRecommenderBuilder(conf)
+			case 'input':
+			case 'config':	
+				switch (recommenderSelected) {
+					case 1:
+					  recommenderBuilder = getUserBasedRecommenderBuilder(hasPreference, similarity, withWeighting, neighborhood)
+					  break
+					case 2:
+					  recommenderBuilder = getItemBasedRecommenderBuilder(hasPreference, similarity, withWeighting)
+					  break
+					case 3:
+					  recommenderBuilder = getSlopeOneRecommenderBuilder(withWeighting)
+				}
+				break
+			case 'class':
+				recommenderBuilder = getCustomRecommenderBuilder(conf)
 		}	
 		return recommenderBuilder
 	}
-		
+	
 	private RecommenderBuilder getCustomRecommenderBuilder(conf) {
 		MahoutRecommenderSupport.classLoader.loadClass(conf.mahout.recommender.builderClass).newInstance()
 	}
-		
-	Recommender getRecommender(Integer recommenderSelected, Boolean hasPreference, String similarity,
-			Boolean withWeighting, String neighborhood) {
-			LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
-			RecommenderBuilder recommenderBuilder = getRecommenderBuilder(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
 	
-			DataModel model = getDataModel(hasPreference)
-	  
-			return recommenderBuilder.buildRecommender(model)
+	Recommender getRecommender(Integer recommenderSelected, Boolean hasPreference, String similarity,
+	                           Boolean withWeighting, String neighborhood) {
+		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
+		RecommenderBuilder recommenderBuilder = getRecommenderBuilder(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
+		
+		DataModel model = getDataModel(hasPreference)
+		
+		return recommenderBuilder.buildRecommender(model)
 	}
 }

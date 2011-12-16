@@ -31,12 +31,12 @@
 <div class="nav">
   <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label" /></a></span>
 </div>
-<div class="body">
+<div class="body" style="width: 50%">
 <g:if test="${params.debug}">
   <p>User ID: <span style="font-weight: bold">${params.userID}</span></p>
   <p>Recommender: <span style="font-weight: bold">${recommender}</span></p>
 	<h1>Top ${numOfTopPrefs} Preferences</h1>
-	<table style="width: 50%">
+	<table>
 		<thead>
 			<tr>
 				<th>Item ID</th>
@@ -57,7 +57,7 @@
 
 <h1>Recommendations</h1>
 <div class="list">
-<table style="width: 50%">
+<table>
 	<thead>
 		<tr>
 			<th>Item ID</th>
