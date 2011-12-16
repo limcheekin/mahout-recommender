@@ -42,7 +42,7 @@
 
 <form action="../recommender.html" method="post" >
 <div class="list">
-<table style="width: 80%">
+<table>
 	<tbody>
 	<tr>
 		<td style="width: 40%">User ID.</td>

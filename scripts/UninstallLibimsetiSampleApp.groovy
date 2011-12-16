@@ -12,12 +12,6 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package mia.recommender.ch05
-
-import org.apache.mahout.cf.taste.eval.RecommenderBuilder
-import org.apache.mahout.cf.taste.model.DataModel
-import org.apache.mahout.cf.taste.recommender.Recommender
-import org.apache.mahout.cf.taste.common.TasteException
 
 /**
 *
@@ -25,8 +19,12 @@ import org.apache.mahout.cf.taste.common.TasteException
 *
 * @since 0.5
 */
-class LibimsetiRecommenderBuilder implements RecommenderBuilder {
-	public Recommender buildRecommender(DataModel model) throws TasteException {
-      return new LibimsetiRecommender(model)
-	}
+
+includeTargets << grailsScript("Init")
+
+target(main: "The description of the script goes here!") {
+  ant.delete dir:"${basedir}/src/java/mia"
+  ant.delete dir:"${basedir}/src/groovy/mia"
 }
+
+setDefaultTarget(main)
