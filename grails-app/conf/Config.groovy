@@ -39,10 +39,10 @@ grails.mime.types = [ xml: ['text/xml', 'application/xml'],
 	html: ['text/html','application/xhtml+xml']
   ]
 
-mahout.recommender.mode = 'input'  // input, config or class
-mahout.recommender.data.model = 'file'  // file or mysql
+mahout.recommender.mode = 'class'  // input, config or class
+mahout.recommender.data.model = 'mysql'  // file or mysql
 mahout.recommender.data.file = 'intro.csv'
-mahout.recommender.builderClass = 'your.custom.RecommenderBuilder'
+mahout.recommender.builderClass = 'mia.recommender.ch05.LibimsetiRecommenderBuilder'
 mahout.recommender.hasPreference = true
 mahout.recommender.selected = 1  // 1. user-based, 2. item-based or 3. slope-one
 mahout.recommender.similarity = 'LogLikelihood'
