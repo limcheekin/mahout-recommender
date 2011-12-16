@@ -49,7 +49,7 @@ Brief description of the plugin.
     }
 
     def doWithSpring = {
-        // TODO Implement runtime spring config (optional)
+		  mahoutRecommenderSupport(org.grails.mahout.recommender.MahoutRecommenderSupport)
     }
 
     def doWithDynamicMethods = { ctx ->

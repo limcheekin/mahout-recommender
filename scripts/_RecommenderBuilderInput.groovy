@@ -30,7 +30,7 @@ target(acceptInput: "Accept recommender builder input") {
 	neighborhood = null
 	recommenderSelected = null 
 	conf = grailsApp.config
-	MahoutRecommenderSupport = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderSupport")
+	mahoutRecommenderSupport = grailsApp.mainContext.mahoutRecommenderSupport
 	MahoutRecommenderConstants = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderConstants")
 	
 	if (!conf.mahout.recommender.data.model) {
@@ -45,9 +45,9 @@ target(acceptInput: "Accept recommender builder input") {
 	
 	switch (conf.mahout.recommender.mode?:MahoutRecommenderConstants.DEFAULT_MODE) {
 		case 'input':
-			println "1) User-based recommender"
-			println "2) Item-based recommender"
-			println "3) Slope-one recommender"
+			println "\t1) User-based recommender"
+			println "\t2) Item-based recommender"
+			println "\t3) Slope-one recommender"
 			ant.input(message:"Select a recommender:",validargs:"1,2,3", addproperty:"recommenderSelected")
 			recommenderSelected = ant.antProject.properties["recommenderSelected"] as Integer
 			
@@ -56,12 +56,12 @@ target(acceptInput: "Accept recommender builder input") {
 				hasPreference = ant.antProject.properties["hasPreference"] == 'y'
 				
 				if (hasPreference) {
-					println "1) Pearson correlation"
-					println "2) Pearson correlation + weighting"
-					println "3) Euclidean distance"
-					println "4) Euclidean distance + weighting"
-					println "5) Log-likelihood"
-					println "6) Tanimoto coefficient"
+					println "\t1) Pearson correlation"
+					println "\t2) Pearson correlation + weighting"
+					println "\t3) Euclidean distance"
+					println "\t4) Euclidean distance + weighting"
+					println "\t5) Log-likelihood"
+					println "\t6) Tanimoto coefficient"
 					ant.input(message:"Select a similarity metric:", validargs:"1,2,3,4,5,6", addproperty:"similaritySelected")
 					similaritySelected = ant.antProject.properties["similaritySelected"]
 					switch (similaritySelected) {
@@ -80,8 +80,8 @@ target(acceptInput: "Accept recommender builder input") {
 							similarity = "TanimotoCoefficient"
 					}
 				} else {
-					println "1) Log-likelihood"
-					println "2) Tanimoto coefficient"
+					println "\t1) Log-likelihood"
+					println "\t2) Tanimoto coefficient"
 					ant.input(message:"Select similarity metric:", validargs:"1,2", addproperty:"similaritySelected")
 					similaritySelected = ant.antProject.properties["similaritySelected"]
 					switch (similaritySelected) {

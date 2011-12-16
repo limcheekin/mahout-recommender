@@ -21,6 +21,7 @@ package org.grails.mahout.recommender
  * @since 0.5
  */
 class RecommenderController {
+	def mahoutRecommenderSupport
 	
 	def index = {
 		def recommender
@@ -29,7 +30,7 @@ class RecommenderController {
 		def numOfTopPrefs
 		def sortedPrefs
 		
-		flash.errors = MahoutRecommenderSupport.validateEnvironmentSetup()
+		flash.errors = mahoutRecommenderSupport.validateEnvironmentSetup()
 		if (!flash.errors) validateInput()
 		if (!flash.errors) {
 			recommender = getRecommender()
@@ -105,7 +106,7 @@ class RecommenderController {
 		Boolean hasPreference
 		
 		if (params.hasPreference) hasPreference = Boolean.valueOf(params.hasPreference)
-		render MahoutRecommenderSupport.evaluateAverageDifference(params.recommenderSelected as Integer, hasPreference, params.similarity,
+		render mahoutRecommenderSupport.evaluateAverageDifference(params.recommenderSelected as Integer, hasPreference, params.similarity,
 			   Boolean.valueOf(params.withWeighting), params.neighborhood, trainingPercentage, evaluationPercentage)
 	}
 	
@@ -178,7 +179,7 @@ class RecommenderController {
 				def similarity = params.s
 				def withWeighting = Boolean.valueOf(params.w) 
 				def neighborhood = params.n
-				recommender = MahoutRecommenderSupport.getRecommender(recommenderSelected,
+				recommender = mahoutRecommenderSupport.getRecommender(recommenderSelected,
 						hasPreference, similarity, withWeighting, neighborhood)
 				break
 			case 'config':
@@ -187,12 +188,12 @@ class RecommenderController {
 				def similarity = conf.mahout.recommender.similarity
 				def withWeighting = conf.mahout.recommender.withWeighting
 				def neighborhood = conf.mahout.recommender.neighborhood as String
-				recommender = MahoutRecommenderSupport.getRecommender(recommenderSelected,
+				recommender = mahoutRecommenderSupport.getRecommender(recommenderSelected,
 						hasPreference, similarity, withWeighting, neighborhood)
 				break
 			case 'class':
 				def recommenderBuilder = Class.forName(conf.mahout.recommender.builderClass).newInstance()
-				def model = MahoutRecommenderSupport.getDataModel(conf.mahout.recommender.hasPreference)
+				def model = mahoutRecommenderSupport.getDataModel(conf.mahout.recommender.hasPreference)
 				recommender = recommenderBuilder.buildRecommender(model)
 		}
 		return recommender

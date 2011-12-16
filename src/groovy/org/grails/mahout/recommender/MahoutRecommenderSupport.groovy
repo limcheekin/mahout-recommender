@@ -1,4 +1,4 @@
-/* Copyright 2011 the original author or authors.
+/* Copyright 2011-12 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ import org.springframework.core.io.ClassPathResource
 class MahoutRecommenderSupport {
 	static final Log LOG = LogFactory.getLog(MahoutRecommenderSupport.class)
 	
-	static String validateEnvironmentSetup() {
+	String validateEnvironmentSetup() {
 		def conf = ApplicationHolder.application.config
 		String model = conf.mahout.recommender.data.model?:MahoutRecommenderConstants.DEFAULT_DATA_MODEL
 		String error = null
@@ -55,7 +55,7 @@ class MahoutRecommenderSupport {
 		return error
 	}
 	
-	static Double evaluateAverageDifference(Integer recommenderSelected,
+	Double evaluateAverageDifference(Integer recommenderSelected,
 		                                        Boolean hasPreference,
 																						String similarity,
 																						Boolean withWeighting,
@@ -76,7 +76,7 @@ class MahoutRecommenderSupport {
 		return score
 	}
 	
-	private static RecommenderBuilder getUserBasedRecommenderBuilder(Boolean hasPreference, 
+	private RecommenderBuilder getUserBasedRecommenderBuilder(Boolean hasPreference, 
 																																	String similarity, 
 																																	Boolean withWeighting, 
 																																	String neighborhood) {
@@ -96,7 +96,7 @@ class MahoutRecommenderSupport {
 		return recommenderBuilder
 	}				
 																																																																																			
-	private static RecommenderBuilder getItemBasedRecommenderBuilder(Boolean hasPreference,
+	private RecommenderBuilder getItemBasedRecommenderBuilder(Boolean hasPreference,
 																																	String similarity,
 																																	Boolean withWeighting) {
 		Class ItemBasedRecommenderBuilder = MahoutRecommenderSupport.classLoader.loadClass("org.grails.mahout.recommender.ItemBased${similarity}RecommenderBuilder")
@@ -110,17 +110,17 @@ class MahoutRecommenderSupport {
 		return recommenderBuilder
 	}	  
 																						
-	private static RecommenderBuilder getSlopeOneRecommenderBuilder(Boolean withWeighting) {
+	private RecommenderBuilder getSlopeOneRecommenderBuilder(Boolean withWeighting) {
 		RecommenderBuilder recommenderBuilder = new SlopeOneRecommenderBuilder()
 		recommenderBuilder.withWeighting = withWeighting
 		return recommenderBuilder
 	}
 																																									
-	static DataModel getDataModel(Boolean hasPreference) {
+	DataModel getDataModel(Boolean hasPreference) {
 		def grailsApp = ApplicationHolder.application
 		def conf = grailsApp.config
 		DataModel model
-		switch (conf.mahout.recommender.data.model) {
+		switch (conf.mahout.recommender.data.model?:MahoutRecommenderConstants.DEFAULT_DATA_MODEL) {
 		case 'file':
 		  String fileName = conf.mahout.recommender.data.file
 		  LOG.info "Instanstiate file model for ${fileName}"
@@ -147,7 +147,7 @@ class MahoutRecommenderSupport {
 		return model
 	}							
 	
-	static IRStatistics getIRStatistics(Integer recommenderSelected, Boolean hasPreference, String similarity,
+	IRStatistics getIRStatistics(Integer recommenderSelected, Boolean hasPreference, String similarity,
 		Boolean withWeighting, String neighborhood, Double relevanceThreshold, Integer at, Double evaluationPercentage) {
 		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood, relevanceThreshold = $relevanceThreshold, at = $at, evaluationPercentage = $evaluationPercentage"
 		RecommenderBuilder recommenderBuilder = getRecommenderBuilder(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
@@ -166,7 +166,7 @@ class MahoutRecommenderSupport {
 	  return stats
 	}
 		
-	private static RecommenderBuilder getRecommenderBuilder(Integer recommenderSelected, Boolean hasPreference, String similarity,
+	private RecommenderBuilder getRecommenderBuilder(Integer recommenderSelected, Boolean hasPreference, String similarity,
 		Boolean withWeighting, String neighborhood) {
 		LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
 		RecommenderBuilder recommenderBuilder
@@ -185,7 +185,7 @@ class MahoutRecommenderSupport {
 		return recommenderBuilder
 	}
 		
-	static Recommender getRecommender(Integer recommenderSelected, Boolean hasPreference, String similarity,
+	Recommender getRecommender(Integer recommenderSelected, Boolean hasPreference, String similarity,
 			Boolean withWeighting, String neighborhood) {
 			LOG.debug "recommenderSelected = $recommenderSelected, hasPreference = $hasPreference, similarity = $similarity, withWeighting = $withWeighting, neighborhood = $neighborhood"
 			RecommenderBuilder recommenderBuilder = getRecommenderBuilder(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
@@ -193,5 +193,5 @@ class MahoutRecommenderSupport {
 			DataModel model = getDataModel(hasPreference)
 	  
 			return recommenderBuilder.buildRecommender(model)
-		}
+	}
 }

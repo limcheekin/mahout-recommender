@@ -36,7 +36,7 @@ target(main: "Evaluating precision and recall") {
 		defaultvalue: MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE)
   evaluationPercentage = ant.antProject.properties["evaluationPercentage"] as Double
 
-	stats = MahoutRecommenderSupport.getIRStatistics(recommenderSelected, hasPreference, similarity, 
+	stats = mahoutRecommenderSupport.getIRStatistics(recommenderSelected, hasPreference, similarity, 
 					withWeighting, neighborhood, relevanceThreshold, at, evaluationPercentage)
 	
 	echo "precision = $stats.precision, recall = $stats.recall"

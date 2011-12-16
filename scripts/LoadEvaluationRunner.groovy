@@ -34,7 +34,7 @@ target(main: "run load evaluation runner to evaluate performance") {
 	howMany = ant.antProject.properties["howMany"] as Integer
   */
 
-	recommender = recommender = MahoutRecommenderSupport.getRecommender(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
+	recommender = mahoutRecommenderSupport.getRecommender(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
  
 	for (int i = 0; i < loop; i++) {
 		LoadEvaluator.runLoad recommender

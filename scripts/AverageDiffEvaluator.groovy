@@ -33,7 +33,7 @@ target(main: "Evaluating average difference") {
 		        defaultvalue: MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE)
   evaluationPercentage = ant.antProject.properties["evaluationPercentage"] as Double
 
-	score = MahoutRecommenderSupport.evaluateAverageDifference(recommenderSelected, hasPreference, similarity, 
+	score = mahoutRecommenderSupport.evaluateAverageDifference(recommenderSelected, hasPreference, similarity, 
 					withWeighting, neighborhood, trainingPercentage, evaluationPercentage)
 	
 	echo "score = $score"

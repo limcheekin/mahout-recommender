@@ -22,7 +22,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="layout" content="main" />
-<title>Finding an effective recommender</title>
+<title>Finding an effective recommender by average difference</title>
 <g:javascript library="jquery" plugin="jquery" />
 <script type="text/javascript">
 	$(function() {
@@ -194,7 +194,11 @@ function scrollToElement(id) {
   <span class="menuButton"><a id="evaluatorMenuButton" href="#">Run Evaluator</a></span>
 </div>
 <div class="body">
-<h1>Finding An Effective Recommender</h1>
+<h1>Finding An Effective Recommender By Average Difference</h1>
+<g:set var="error" value="${grailsApplication.mainContext.mahoutRecommenderSupport.validateEnvironmentSetup()}" />
+<g:if test="${error}">
+  <div class="errors">${error}</div>
+</g:if>
 <p>Click on "Run Evaluator" above to start the recommenders' evaluation.
 <p>Some values are "not a number", or undefined, and are denoted by Java's NaN symbol.</p>
 <h2>User-based Recommenders</h2>

@@ -25,9 +25,9 @@ includeTargets << grailsScript("_GrailsBootstrap")
 
 target(main: "Create table") {
 	depends(bootstrap)
-	println "1) Preference table"
-	println "2) Boolean preference table"
-	println "3) Slope-one diffs table"
+	println "\t1) Preference table"
+	println "\t2) Boolean preference table"
+	println "\t3) Slope-one diffs table"
 	ant.input(message:"Create table:",validargs:"1,2,3", addproperty:"tableSelected")
 	tableSelected = ant.antProject.properties["tableSelected"] as Integer
 	switch (tableSelected) {

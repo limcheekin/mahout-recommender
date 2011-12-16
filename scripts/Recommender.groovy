@@ -32,7 +32,7 @@ target(main: "run recommender") {
 	ant.input(message:"Enter expected number of recommendations return:", addproperty:"howMany", defaultvalue: MahoutRecommenderConstants.DEFAULT_HOW_MANY)
 	howMany = ant.antProject.properties["howMany"] as Integer
  
-	recommender = MahoutRecommenderSupport.getRecommender(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
+	recommender = mahoutRecommenderSupport.getRecommender(recommenderSelected, hasPreference, similarity, withWeighting, neighborhood)
  
 	items = recommender.recommend(userID, howMany)
 	

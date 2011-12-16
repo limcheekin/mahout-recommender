@@ -39,17 +39,18 @@ class SlopeOneRecommenderBuilder implements RecommenderBuilder {
 	Boolean withWeighting
 	
 	public Recommender buildRecommender(DataModel dataModel) throws TasteException {
-		def conf = ApplicationHolder.application.config
+		def grailsApp = ApplicationHolder.application
+		def conf = grailsApp.config
 		def model 
 		DiffStorage diffStorage
-		switch (conf.mahout.recommender.data.model) {
+		switch (conf.mahout.recommender.data.model?:MahoutRecommenderConstants.DEFAULT_DATA_MODEL) {
 		case 'file':
 		  model = dataModel
 		  diffStorage = new MemoryDiffStorage(
 			  model, withWeighting ? Weighting.WEIGHTED : Weighting.UNWEIGHTED, Long.MAX_VALUE);
 			break
 		case 'mysql':
-			model = MahoutRecommenderSupport.getDataModel(true)
+			model = grailsApp.mainContext.mahoutRecommenderSupport.getDataModel(true)
 			diffStorage = new MySQLJDBCDiffStorage(model, 
 					conf.mahout.recommender.slopeone.diffs.table?:AbstractJDBCDiffStorage.DEFAULT_DIFF_TABLE,
 					conf.mahout.recommender.slopeone.diffs.itemIDAColumn?:AbstractJDBCDiffStorage.DEFAULT_ITEM_A_COLUMN,
