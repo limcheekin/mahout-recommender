@@ -20,41 +20,61 @@
 * @since 0.5
 */
 import groovy.sql.Sql
+import org.apache.mahout.cf.taste.impl.model.jdbc.AbstractJDBCDataModel
 
 includeTargets << grailsScript("_GrailsBootstrap")
 
-target(main: "Insert data files to database") {
+target(main: "Insert data file to database") {
 	depends(parseArguments, bootstrap)
+	
 	if (argsMap["params"].size() == 0) {
 		ant.echo "Import data command (import-data) usages:"
-		ant.echo "\tgrails import-data file1.csv"
-		ant.echo "\tgrails import-data file1.csv file2.csv file3.csv"
+		ant.echo "\tgrails import-data fileName [numberOfLines]"
+		ant.echo "\nExamples:"
+		ant.echo "\tgrails import-data grails-app/conf/data.csv"
+		ant.echo "\tgrails import-data data.csv 100000"
 		exit 1
 	} else {
 		Sql sql = new Sql(grailsApp.mainContext.dataSource)
-		preferenceTableName = grailsApp.config.mahout.recommender.preference.table
-		userIdColumn = grailsApp.config.mahout.recommender.preference.userIdColumn
-		itemIdColumn = grailsApp.config.mahout.recommender.preference.itemIdColumn
-		valueColumn = grailsApp.config.mahout.recommender.preference.valueColumn
+		def preferenceTableName = grailsApp.config.mahout.recommender.preference.table?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE
+		def userIdColumn = grailsApp.config.mahout.recommender.preference.userIdColumn?:AbstractJDBCDataModel.DEFAULT_USER_ID_COLUMN
+		def itemIdColumn = grailsApp.config.mahout.recommender.preference.itemIdColumn?:AbstractJDBCDataModel.DEFAULT_ITEM_ID_COLUMN
+		def valueColumn = grailsApp.config.mahout.recommender.preference.valueColumn?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_COLUMN
+		def fileName = argsMap["params"][0]
+		def numberOfLines = argsMap["params"][1] ? argsMap["params"][1] as Long : Long.MAX_VALUE
+		def MahoutRecommenderConstants = classLoader.loadClass("org.grails.mahout.recommender.MahoutRecommenderConstants")
 		println "Import data to $preferenceTableName table:"
-		argsMap["params"].each { fileName ->
-			fullFilename = "$basedir/$fileName"
-			print "* Importing ${fullFilename}..."
-			new File(fullFilename).eachLine { line -> 
+		def fullFilename = "$basedir/$fileName"
+		println "Importing ${fullFilename}..."
+		FileReader fr = new FileReader(new File(fullFilename))
+		BufferedReader br = new BufferedReader(fr)
+		String line
+		Long lineCount = 0
+		def batchSize = MahoutRecommenderConstants.DEFAULT_BATCH_SIZE
+		def data
+		
+		sql.withBatch(batchSize) { stmt ->
+		  // read file line by line
+			while ((line = br.readLine()) != null && lineCount < numberOfLines) {
 				if (line) {
 					data = line.split(",")
 					if (data.size() == 2) {
-						sql.executeInsert("insert into $preferenceTableName ($userIdColumn, $itemIdColumn) values (?,?)", data)
+						stmt.addBatch "insert into $preferenceTableName ($userIdColumn, $itemIdColumn) values (${data[0]}, ${data[1]})"
 					} else if (data.size() == 3) {
-						sql.executeInsert("insert into $preferenceTableName ($userIdColumn, $itemIdColumn, $valueColumn) values (?,?,?)", data)
+						stmt.addBatch "insert into $preferenceTableName ($userIdColumn, $itemIdColumn, $valueColumn) values (${data[0]}, ${data[1]}, ${data[2]})"
 					} else {
 						ant.echo "Invalid data file! Only 2 or 3 columns CSV file supported."
-						exit 1
-					}
+						exit 1 
+					} 
+				  ++lineCount
+				  if (lineCount % batchSize == 0) {
+					  println "* $lineCount rows imported."
+				    }
 				}
 			}
-			println " [Completed]"
 		}
+		fr.close()
+		println "[Done. $lineCount rows imported.]"
 	}
 }
 
