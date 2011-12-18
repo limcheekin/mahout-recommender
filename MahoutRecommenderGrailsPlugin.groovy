@@ -23,22 +23,30 @@ class MahoutRecommenderGrailsPlugin {
     // the plugin version
     def version = "0.5"
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "1.3.7 > *"
+    def grailsVersion = "1.3 > *"
     // the other plugins this plugin depends on
-    def dependsOn = [:]
+    def dependsOn = [jquery:'1.4 > *']
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
-            "grails-app/views/error.gsp",
-			      "grails-app/views/layouts/main.gsp", 
-				    "grails-app/conf/intro.csv"
+          "grails-app/views/error.gsp",
+			    "grails-app/views/layouts/main.gsp", 
+				  "grails-app/conf/intro.csv",
+					"lib/mysql-connector-java-5.1.18.jar"
     ]
 
     // TODO Fill in these fields
-    def author = "Your name"
-    def authorEmail = ""
-    def title = "Plugin summary/headline"
-    def description = '''\\
-Brief description of the plugin.
+    def author = "Lim Chee Kin"
+    def authorEmail = "limcheekin@vobject.com"
+    def title = "Mahout Recommender Plugin - A Scalable Recommendation System"
+    def description = '''\
+The Mahout Recommender plugin enabled you to use [Apache Mahout|http://mahout.apache.org/] recommendation algorithms in your Grails project.
+With the plugin, you can find an effective recommender, evaluating precision and recall, and evaluating the performance of the 
+selected recommender without writing single line of code. 
+
+* Project Site: [https://github.com/limcheekin/mahout-recommender] 
+* Documentation: [http://code.google.com/p/grails-activiti-plugin/]
+* Support: [https://github.com/limcheekin/mahout-recommender/issues] 
+* Discussion Forum: [http://groups.google.com/group/grails-mahout-recommender]
 '''
 
     // URL to the plugin's documentation

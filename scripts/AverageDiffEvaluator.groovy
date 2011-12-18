@@ -26,11 +26,11 @@ target(main: "Evaluating average difference") {
 	depends(acceptInput)
 
 	ant.input(message:"Enter training percentage:", addproperty:"trainingPercentage", 
-		        defaultvalue: MahoutRecommenderConstants.DEFAULT_TRAINING_PERCENTAGE)
+		        defaultvalue: conf.mahout.recommender.evaluator.trainingPercentage?:MahoutRecommenderConstants.DEFAULT_TRAINING_PERCENTAGE)
 	trainingPercentage = ant.antProject.properties["trainingPercentage"] as Double
 	
 	ant.input(message:"Enter evaluation percentage:", addproperty:"evaluationPercentage",
-		        defaultvalue: MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE)
+		        defaultvalue: conf.mahout.recommender.evaluator.evaluationPercentage?:MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE)
   evaluationPercentage = ant.antProject.properties["evaluationPercentage"] as Double
 
 	score = mahoutRecommenderSupport.evaluateAverageDifference(recommenderSelected, hasPreference, similarity, 

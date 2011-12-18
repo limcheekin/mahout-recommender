@@ -63,3 +63,13 @@ mahout.recommender.slopeone.diffs.stdevColumn = 'standard_deviation'
 mahout.recommender.slopeone.diffs.minDiffCount = 2
 mahout.recommender.evaluator.trainingPercentage = 0.7
 mahout.recommender.evaluator.evaluationPercentage = 1.0
+
+grails.doc.authors = 'Lim Chee Kin'
+grails.doc.license = 'Apache License 2.0'
+grails.doc.title = 'Mahout Recommender Plugin'
+grails.doc.subtitle = 'Mahout Recommender Plugin - A Scalable Recommendation System'
+grails.doc.copyright = 'Copyright 2011-2012 the original author or authors.'
+grails.doc.footer = '<a href="http://mahout.apache.org/" target="_blank"><img src="https://cwiki.apache.org/confluence/download/attachments/80899/mahout-logo-poweredby-55.png" alt="Mahout Powered By Logo" border="0" /></a>'
+
+grails.views.default.codec="none" // none, html, base64
+grails.views.gsp.encoding="UTF-8"

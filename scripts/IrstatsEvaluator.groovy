@@ -33,7 +33,7 @@ target(main: "Evaluating precision and recall") {
 	at = ant.antProject.properties["at"] as Integer
 
 	ant.input(message:"Enter evaluation percentage:", addproperty:"evaluationPercentage",
-		defaultvalue: MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE)
+		defaultvalue: conf.mahout.recommender.evaluator.evaluationPercentage?:MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE)
   evaluationPercentage = ant.antProject.properties["evaluationPercentage"] as Double
 
 	stats = mahoutRecommenderSupport.getIRStatistics(recommenderSelected, hasPreference, similarity, 
