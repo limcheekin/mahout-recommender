@@ -1,0 +1,20 @@
+h1. import-data
+
+h2. Purpose
+The @import-data@ command import data from a comma-separated-value(CSV) data 
+file to preference table (3 columns) or boolean preference table (2 columns).
+
+h2. Examples
+{code}
+grails import-data grails-app/conf/data.csv
+grails import-data data.csv 100000
+{code}
+
+h2. Description
+Usage:
+{code}
+grails import-data fileName [numberOfLines]
+{code}
+The @import-data@ command has the following arguments:
+* @fileName@: This argument is mandatory. The file name specified is relative to the base directory of the project.
+* @numberOfLines@: This argument is optional. A numeric value is to specify number of lines of data to be imported to the table. All data will be imported if this argument is omitted.

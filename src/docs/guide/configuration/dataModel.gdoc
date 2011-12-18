@@ -1,0 +1,66 @@
+The plugin is using file data model by default, this section will described step-by-step 
+of how to setup your project to use MySQL data model with assumption that MySQL database 
+is pre-installed and started in your development workstation.
+
+h3. Steps to setup Mahout Recommendation Plugin with MySQL database
+h4. Create Recommender Database in MySQL
+* Login to MySQL using command below:
+{code}
+mysql -u root
+{code}
+
+* Create recommender database using command below:
+{code}
+create database recommender
+{code}
+
+h4. Download and Setup MySQL Connector/J (JDBC Driver)
+* Download latest MySQL Connector/J at http://www.mysql.com/downloads/connector/j/
+* Extract the downloaded compressed file and copy the mysql-connector-java-5.1.x-bin.jar to lib directory of your grails application.
+
+h4. Update Config.groovy
+* Update @mahout.recommender.data.model@ in grails-app/conf/Config.groovy from 'file' to 'mysql', for example:
+{code}
+mahout.recommender.data.model = 'mysql'  // 'file' or 'mysql'
+{code}
+
+h4. Update Datasource.groovy
+* Update database configurations in @grails-app/conf/DataSource.groovy@ from HSQL or H2 to MySQL, for example:
+{code}
+dataSource {
+    pooled = true
+    driverClassName = "com.mysql.jdbc.Driver"
+    username = "root"
+    password = ""
+}
+hibernate {
+    cache.use_second_level_cache = true
+    cache.use_query_cache = true
+    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
+}
+// environment specific settings
+environments {
+    development {
+        dataSource {
+            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+            url = "jdbc:mysql://localhost:3306/recommender"
+        }
+    }
+    test {
+        dataSource {
+            dbCreate = "create-drop"          
+            url = "jdbc:mysql://localhost:3306/recommender"
+        }
+    }
+    production {
+        dataSource {
+            dbCreate = "update"
+            url = "jdbc:mysql://localhost:3306/recommender"
+        }
+    }
+}
+{code}
+
+To save your typing, you can download the MySQL's "DataSource.groovy":https://github.com/limcheekin/mahout-recommender/raw/master/grails-app/conf/DataSource.groovy 
+
+Done! You should able run your mahout recommender application with MySQL data model without any problem.

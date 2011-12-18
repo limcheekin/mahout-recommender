@@ -1,0 +1,9 @@
+The plugin support both the file data model and MySQL data model.
+
+For file data model, no additional configuration is required to make use of 
+command line tool of the plugin, but the data file must be located in classpath such as @grails-app/conf@ 
+and data file name must be specified in @mahout.recommender.data.file@ for web-based tools such as 
+[recommenders' evaluator|guide:evaluator] and [recommender|guide:webRecommender].
+
+For MySQL data model, change @mahout.recommender.data.model@ from @'file'@ to @'mysql'@ 
+and configure the @DataSource.groovy@ properly. 

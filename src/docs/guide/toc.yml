@@ -1,0 +1,19 @@
+introduction:
+  title: Introduction to Mahout Recommender plugin
+  changes: Change Log
+gettingStarted: Getting Started
+configuration:
+  title: Configuration
+  basicConfiguration: Basic Configuration
+  dataModel: MySQL Data Model
+commandLine: The Command Line
+recommenderController:
+  title: Recommender Controller
+  evaluator: Web-based Recommenders' Evaluator
+  webRecommender: 
+    title: Web-based Recommender  
+    restSupport: REST Support
+sampleApplication: The Libimseti Sample Application
+consulting: Consulting and Community Support
+ 
+  

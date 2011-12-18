@@ -1,0 +1,31 @@
+The following table described configuration items in @Config.groovy@ supported by the plugin:
+* Item 10 to 21 below only applicable when @mahout.recommender.data.model = 'mysql'@
+* MahoutRecommenderConstants = org.grails.mahout.recommender.MahoutRecommenderConstants
+* AbstractJDBCDataModel = org.apache.mahout.cf.taste.impl.model.jdbc.AbstractJDBCDataModel
+* AbstractJDBCDiffStorage = org.apache.mahout.cf.taste.impl.recommender.slopeone.jdbc.AbstractJDBCDiffStorage
+{table}
+*No.* | *Configuration Item* | *Description*
+1. | mahout.recommender.mode | Determine which recommender to be used. Default value is 'input' specified in @MahoutRecommenderConstants.DEFAULT_MODE@. Valid values: 'input', 'config' or 'class'. In 'input' mode, user need to specify value for item 5 to 9 below on screen. In 'config' mode, it will take values configured in item 5 to 9 below. In 'class' mode, it will take value specified in @mahout.recommender.builderClass@.   
+2. | mahout.recommender.data.model | Determine which data model to be used. Default value is 'file' specified in @MahoutRecommenderConstants.DEFAULT_DATA_MODEL@. Valid values: 'file' or 'mysql'. When the value is 'file'data file name must be specified in @mahout.recommender.data.file@ for web-based tools such as [recommenders' evaluator|guide:evaluator] and recommender.
+3. | mahout.recommender.data.file | Data file to be loaded by @FileDataModel@. Default value is 'data.csv' specified in @MahoutRecommenderConstants.DEFAULT_DATA_FILE@. The data file specified must me located in classpath such as @grails-app/config@.
+4. | mahout.recommender.builderClass | Recommender to be loaded when @mahout.recommender.mode@ is 'class'. Value specified must be full class name of the class that implements @org.apache.mahout.cf.taste.eval.RecommenderBuilder@ such as @'mia.recommender.ch05.LibimsetiRecommenderBuilder'@.
+5. | mahout.recommender.hasPreference | Determine which recommender to be used when @mahout.recommender.mode@ is 'config'. Valid values: true or false.
+6. | mahout.recommender.selected | Determine which recommender to be used when @mahout.recommender.mode@ is 'config'. Valid values: 1, 2 or 3 (1. user-based, 2. item-based or 3. slope-one).
+7. | mahout.recommender.similarity | Determine which similarity to be used when @mahout.recommender.mode@ is 'config'. Valid values: 'PearsonCorrelation', 'EuclideanDistance', 'LogLikelihood' or 'TanimotoCoefficient'.
+8. | mahout.recommender.withWeighting | Determine whether weighting is enabled when @mahout.recommender.mode@ is 'config'. Valid values: true or false. Applicable to 'PearsonCorrelation' or 'EuclideanDistance' similarity metric or Slope-one recommender only. 
+9. | mahout.recommender.neighborhood | Determine whether fix-size neighborhood or threshold-based neighborhood to be used when @mahout.recommender.mode@ is 'config' and user-based recommender is selected. Integer value for fix-size neighborhood such as 4 and decimal value (< 1.0) for threshold-based neighborhood such as 0.5.
+10. | mahout.recommender.preference.table | Overwrite default value 'taste_preferences' specified in @AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE@.
+11. | mahout.recommender.preference.userIdColumn | Overwrite default value 'user_id' specified in @AbstractJDBCDataModel.DEFAULT_USER_ID_COLUMN@.
+12. | mahout.recommender.preference.itemIdColumn | Overwrite default value 'item_id' specified in @AbstractJDBCDataModel.DEFAULT_ITEM_ID_COLUMN@.
+13. | mahout.recommender.preference.valueColumn | Overwrite default value 'preference' specified in @AbstractJDBCDataModel.DEFAULT_PREFERENCE_COLUMN@.
+14. | mahout.recommender.preference.timestampColumn | Overwrite default value 'last_updated' specified in @MahoutRecommenderConstants.DEFAULT_PREFERENCE_TIME_COLUMN@.
+15. | mahout.recommender.slopeone.diffs.table | Overwrite default value 'taste_slopeone_diffs' specified in @AbstractJDBCDiffStorage.DEFAULT_DIFF_TABLE@.
+16. | mahout.recommender.slopeone.diffs.itemIDAColumn | Overwrite default value 'item_id_a' specified in @AbstractJDBCDiffStorage.DEFAULT_ITEM_A_COLUMN@.
+17. | mahout.recommender.slopeone.diffs.itemIDBColumn | Overwrite default value 'item_id_b' specified in @AbstractJDBCDiffStorage.DEFAULT_ITEM_B_COLUMN@.
+18. | mahout.recommender.slopeone.diffs.countColumn | Overwrite default value 'count' specified in @AbstractJDBCDiffStorage.DEFAULT_COUNT_COLUMN@. 
+19. | mahout.recommender.slopeone.diffs.avgColumn | Overwrite default value 'average_diff' specified in @AbstractJDBCDiffStorage.DEFAULT_AVERAGE_DIFF_COLUMN@.
+20. | mahout.recommender.slopeone.diffs.stdevColumn | Overwrite default value 'standard_deviation' specified in @AbstractJDBCDiffStorage.DEFAULT_STDEV_COLUMN@.
+21. | mahout.recommender.slopeone.diffs.minDiffCount | Overwrite default value 2 specified in @MahoutRecommenderConstants.DEFAULT_SLOPEONE_DIFFS_MIN_COUNT@.
+22. | mahout.recommender.evaluator.trainingPercentage | Overwrite default value 0.7 specified in @MahoutRecommenderConstants.DEFAULT_TRAINING_PERCENTAGE@.
+23. | mahout.recommender.evaluator.evaluationPercentage | Overwrite default value 1.0 specified in @MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE@.
+{table}

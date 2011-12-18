@@ -1,0 +1,19 @@
+h1. create-table
+
+h2. Purpose
+The @create-table@ command creates one of the following tables:
+* Preference table
+* Boolean preference table
+* Slope-one diffs table
+If the table exists, it will drop it before creation.
+
+h2. Examples
+{code}
+grails create-table
+{code}
+
+h2. Description
+Usage:
+{code}
+grails create-table
+{code}

@@ -1,0 +1,15 @@
+h1. average-diff-evaluator
+
+h2. Purpose
+The @average-diff-evaluator@ command allowed user to evaluate effectiveness of a recommender by average difference.
+
+h2. Examples
+{code}
+grails average-diff-evaluator
+{code}
+
+h2. Description
+Usage:
+{code}
+grails average-diff-evaluator
+{code}

@@ -1,0 +1,17 @@
+h1. irstats-evaluator
+
+h2. Purpose
+The @irstats-evaluator@ command evaluating precision and recall for a recommender.
+Please refer to "Wikipedia's precision and recall":http://en.wikipedia.org/wiki/Precision_and_recall 
+for more information.
+
+h2. Examples
+{code}
+irstats-evaluator
+{code}
+
+h2. Description
+Usage:
+{code}
+irstats-evaluator
+{code}

@@ -1,0 +1,15 @@
+The command line tools of the plugin can be divided to the following categories:
+h2. Recommender
+All commands below using the common input process with additional command-specific input.
+* [average-diff-evaluator|Command Line]
+* [irstats-evaluator|Command Line]
+* [load-runner|Command Line]
+* [recommender|Command Line] 
+
+h2. Database
+* [create-table|Command Line]
+* [import-data|Command Line]
+
+h2. Libimseti Sample Application
+* [install-libimseti-sample-app|Command Line]
+* [uninstall-libimseti-sample-app|Command Line]

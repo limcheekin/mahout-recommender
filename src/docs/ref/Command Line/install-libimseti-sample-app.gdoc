@@ -1,0 +1,18 @@
+h1. install-libimseti-sample-app
+
+h2. Purpose
+The @install-libimseti-sample-app@ command install source code of 
+libimseti sample application to your project, specifically to @src/java@ and 
+@src/groovy@ directory and update @mahout.recommender.mode@ and 
+@mahout.recommender.builderClass@ in @Config.groovy@ file.
+
+h2. Examples
+{code}
+install-libimseti-sample-app
+{code}
+
+h2. Description
+Usage:
+{code}
+install-libimseti-sample-app
+{code}

@@ -1,0 +1,5 @@
+*18-Dec-2011 0.5*
+* First release of the plugin.
+* Included Apache Mahout 0.5 jar files.
+* Introduced command line: [average-diff-evaluator|Command Line], [create-table|Command Line], [import-data|Command Line], [install-libimseti-sample-app|Command Line], [irstats-evaluator|Command Line], [load-runner|Command Line], [recommender|Command Line] and [uninstall-libimseti-sample-app|Command Line].
+* Introduced recommender controller (port of RecommenderServlet) and web-based recommenders' evaluator.

@@ -1,0 +1,11 @@
+Install the plugin into your project with the following command: 
+{code}
+grails install-plugin mahout-recommender
+{code}
+
+After the plugin installed into your project, the following configurations will be 
+appended to your project's Config.groovy file: 
+{code}
+// Added by the Mahout Recommender plugin:
+mahout.recommender.mode = 'input'  // 'input', 'config' or 'class'
+{code}

@@ -1,0 +1,17 @@
+h1. uninstall-libimseti-sample-app
+
+h2. Purpose
+The @uninstall-libimseti-sample-app@ command remove source code of 
+libimseti sample application from your project, specifically from @src/java@ and 
+@src/groovy@ directory.
+
+h2. Examples
+{code}
+uninstall-libimseti-sample-app
+{code}
+
+h2. Description
+Usage:
+{code}
+uninstall-libimseti-sample-app
+{code}

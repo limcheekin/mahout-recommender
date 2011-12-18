@@ -1,0 +1,16 @@
+h1. load-runner
+
+h2. Purpose
+The @load-runner@ command evaluating performance of a recommender 
+by find out it's average processing time per recommendation in milliseconds.
+
+h2. Examples
+{code}
+load-runner
+{code}
+
+h2. Description
+Usage:
+{code}
+load-runner
+{code}

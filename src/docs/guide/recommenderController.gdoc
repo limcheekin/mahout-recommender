@@ -1,0 +1,2 @@
+The recommender controller is enhanced version of mahout's RecommenderServlet implementation. 
+It included a web-based recommenders' evaluator to enabled user to find an effective recommender.

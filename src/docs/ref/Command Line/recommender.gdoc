@@ -1,0 +1,16 @@
+h1. recommender
+
+h2. Purpose
+The @recommender@ command allowed user select a recommender, 
+enter user Id. and return recommended items for the user.
+
+h2. Examples
+{code}
+grails recommender
+{code}
+
+h2. Description
+Usage:
+{code}
+grails recommender
+{code}
