@@ -1,0 +1,19 @@
+The web-based recommender supports user to test recommender using web user interface 
+with or without debug-enabled.
+
+By access to [http://localhost:8080/<yourApplication>/recommender/settings|http://localhost:8080/<yourApplication>/recommender/settings] 
+in your browser, you will see a screen similar to the following image:
+
+!settings.png! 
+
+After fill-in all required fields, click on "Submit" button to see the recommendations.
+
+{note}
+You can checked the check box of "Enabled debug?" to see the recommendation results with more debugging information.
+{note}
+
+h3. Recommendations Without Debug-enabled
+!recommenderHTML.png! 
+
+h3. Recommendations With Debug-enabled
+!recommenderWithDebugEnabledHTML.png! 

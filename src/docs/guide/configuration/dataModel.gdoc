@@ -15,11 +15,11 @@ create database recommender
 {code}
 
 h4. Download and Setup MySQL Connector/J (JDBC Driver)
-* Download latest MySQL Connector/J at http://www.mysql.com/downloads/connector/j/
+* Download latest MySQL Connector/J at [http://www.mysql.com/downloads/connector/j/|http://www.mysql.com/downloads/connector/j/].
 * Extract the downloaded compressed file and copy the mysql-connector-java-5.1.x-bin.jar to lib directory of your grails application.
 
 h4. Update Config.groovy
-* Update @mahout.recommender.data.model@ in grails-app/conf/Config.groovy from 'file' to 'mysql', for example:
+* Update @mahout.recommender.data.model@ in @grails-app/conf/Config.groovy@ from 'file' to 'mysql', for example:
 {code}
 mahout.recommender.data.model = 'mysql'  // 'file' or 'mysql'
 {code}
@@ -61,6 +61,6 @@ environments {
 }
 {code}
 
-To save your typing, you can download the MySQL's "DataSource.groovy":https://github.com/limcheekin/mahout-recommender/raw/master/grails-app/conf/DataSource.groovy 
+To save your typing, you can download the MySQL's [DataSource.groovy|https://github.com/limcheekin/mahout-recommender/raw/master/grails-app/conf/DataSource.groovy]. 
 
 Done! You should able run your mahout recommender application with MySQL data model without any problem.

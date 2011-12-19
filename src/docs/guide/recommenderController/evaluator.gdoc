@@ -1,0 +1,14 @@
+The web-based recommenders' evaluator supports user to evaluate recommenders' 
+effectiveness by average difference. Recommenders under evaluation including 
+user-based recommender, item-based recommender and slope-one recommender with 
+different type of similarity metrics such as pearson correlation, euclidean distance,
+Log-likelihood and tanimoto coefficient.
+
+By access to [http://localhost:8080/<yourApplication>/recommender/evaluator|http://localhost:8080/<yourApplication>/recommender/evaluator] 
+in your browser, you will see a screen similar to the following image:
+
+!evaluator.png! 
+
+Start running the evaluation process by click on "Run Evaluator" link.
+
+

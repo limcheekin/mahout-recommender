@@ -1,0 +1,28 @@
+The Libimseti Sample Application is taken from source code of chapter 5 
+of [Mahout In Action|http://www.manning.com/owen/].
+
+Thanks to Sean Owen, one of the book authors of Mahout In Action granted the
+right [in this message|http://www.manning-sandbox.com/thread.jspa?messageID=121614#121614] 
+to use the source code in the plugin as sample application.
+
+The sample application's data set derived from the Czech dating site Líbímseti 
+(http://libimseti.cz/). Users of this site are able to rate other users’ profiles 
+on a scale of 1 to 10. A 1 means NELÍBÍ, or dislike, and a 10 means LÍBÍ, or like. 
+The presentation of profiles on the site suggests that users of such a site are 
+expressing some assessment of the profiled user’s appeal, attractiveness, and dateability. 
+
+You’ll need to download a copy of the complete data from this site, 
+at [http://www.occamslab.com/petricek/data/libimseticomplete.zip|http://www.occamslab.com/petricek/data/libimseticomplete.zip], 
+then extract the gender.dat and ratings.dat file to @grails-app/conf@ directory.
+
+There is 17,359,346 ratings in ratings.dat file. It contains users’ explicit ratings for items, where items are other
+people’s user profiles. That means a recommender system built on this data will be
+recommending people to people.
+
+Please see [Recommender System for Online Dating Service|http://www.occamslab.com/petricek/papers/dating/brozovsky07recommender.pdf] 
+by Lukas Brozovsky and Vaclav Petricek for more information.
+
+You may run the sample application using file data model or MySQL data model. 
+Please see the following commands to install and unstall the sample application:
+* [install-libimseti-sample-app|Command Line]
+* [uninstall-libimseti-sample-app|Command Line]

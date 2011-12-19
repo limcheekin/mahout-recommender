@@ -1,0 +1,70 @@
+Besides display the recommendation results in HTML format, the web-based recommender 
+support return the results in XML and JSON format too.
+
+h3. XML Recommended Items
+By access to the following URL in your browser:
+{code}
+http://localhost:8080/<yourApplication>/recommender.xml?userID=1&howMany=20&
+r=1&p=true&s=PearsonCorrelation&w=true&n=4
+{code}
+
+You will see XML message similar to the below display in your browser
+{code:xml}
+<recommendedItems>
+  <item>
+    <value>5.0</value>
+    <id>104</id>
+  </item>
+  <item>
+    <value>4.0</value>
+    <id>106</id>
+  </item>
+</recommendedItems>
+{code}
+
+If some error occur, you will see XML message similar to the following:
+{code:xml}
+<error>
+  <message>Recommender cannot be blank.</message>
+</error>
+{code}
+
+h3. JSON Recommended Items
+By access to the following URL in your browser:
+{code}
+http://localhost:8080/<yourApplication>/recommender.json?userID=1&howMany=20&
+r=1&p=true&s=PearsonCorrelation&w=true&n=4
+{code}
+{note}
+The URL above is identical to the XML request, except it invoke to @recommender.json@ 
+instead of @recommender.xml@.
+{note}
+
+You will see JSON message similar to the below display in your browser
+{code}
+{"recommendedItems":[{"value":5,"id":104},{"value":4,"id":106}]}
+{code}
+
+If some error occur, you will see JSON message similar to the following:
+{code}
+{"error":{"message":"Recommender cannot be blank."}}
+{code}
+
+h3. Usage
+{code}
+http://localhost:8080/<yourApplication>/recommender.[json|xml]?
+userID=[Long]&howMany=[Integer]&r=[1|2|3]&p=[true|false]&
+s=[PearsonCorrelation|EuclideanDistance|LogLikelihood|TanimotoCoefficient]&
+w=[true|false]&n=[Integer|Double]
+{code}
+# File extension: @recommender.xml@ for XML request, @recommender.json@ for JSON request.
+# @userID@: Specify user ID. in numeric value as java.lang.Long type.
+# @howMany@: Specify expected number of recommendations return in numeric value as java.lang.Integer type.
+# @r@: Specify recommender. Valid values: 1, 2 or 3 (1. user-based, 2. item-based or 3. slope-one).
+# @p@: Specify "has preference value". Valid values: true or false.
+# @s@: Specify similarity metric. Valid values: PearsonCorrelation, EuclideanDistance, LogLikelihood or TanimotoCoefficient.
+# @w@: Specify whether weighting is enabled. Valid values: true or false. Applicable to 'PearsonCorrelation' or 'EuclideanDistance' similarity metric or Slope-one recommender only. 
+# @n@: Specify whether fix-size neighborhood or threshold-based neighborhood when user-based recommender is selected in @r@ above. Integer value for fix-size neighborhood such as 4 and Double value (< 1.0) for threshold-based neighborhood such as 0.5.
+{note}
+Item 4 to 8 above need to be specified only when @mahout.recommender.mode = 'input'@ in @Config.groovy@ file.
+{note}
