@@ -50,7 +50,7 @@ private void updateConfig() {
 				flags:"s", byline:"true", file:"${basedir}/grails-app/conf/Config.groovy"
 	}
 	
-	ant.echo '''
+	println '''
 	************************************************************
 	* Your grails-app/conf/Config.groovy has been updated with *
 	* default configurations of Libimseti sample application;  *

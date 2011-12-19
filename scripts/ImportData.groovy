@@ -22,17 +22,21 @@
 import groovy.sql.Sql
 import org.apache.mahout.cf.taste.impl.model.jdbc.AbstractJDBCDataModel
 
-includeTargets << grailsScript("_GrailsBootstrap")
+includeTargets << new File("${mahoutRecommenderPluginDir}/scripts/_Common.groovy")
 
+USAGE = '''
+Usage:
+  grails import-data fileName [numberOfLines]
+
+Examples:
+  grails import-data grails-app/conf/data.csv
+  grails import-data data.csv 100000
+'''
 target(main: "Insert data file to database") {
 	depends(parseArguments, bootstrap)
 	
 	if (argsMap["params"].size() == 0) {
-		ant.echo "Import data command (import-data) usages:"
-		ant.echo "\tgrails import-data fileName [numberOfLines]"
-		ant.echo "\nExamples:"
-		ant.echo "\tgrails import-data grails-app/conf/data.csv"
-		ant.echo "\tgrails import-data data.csv 100000"
+		errorMessage USAGE
 		exit 1
 	} else {
 		Sql sql = new Sql(grailsApp.mainContext.dataSource)
@@ -63,12 +67,12 @@ target(main: "Insert data file to database") {
 					} else if (data.size() == 3) {
 						stmt.addBatch "insert into $preferenceTableName ($userIdColumn, $itemIdColumn, $valueColumn) values (${data[0]}, ${data[1]}, ${data[2]})"
 					} else {
-						ant.echo "Invalid data file! Only 2 or 3 columns CSV file supported."
+						errorMessage "Invalid data file! Only 2 or 3 columns CSV file supported."
 						exit 1 
 					} 
 				  ++lineCount
 				  if (lineCount % batchSize == 0) {
-					  println "* $lineCount rows imported."
+					  printMessage "* $lineCount rows imported."
 				    }
 				}
 			}

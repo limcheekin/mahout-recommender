@@ -30,7 +30,7 @@ private void updateConfig() {
 			it.writeLine '\n// Added by the Mahout Recommender plugin:'
 			it.writeLine "mahout.recommender.mode = 'input'  // 'input', 'config' or 'class'"
 
-	ant.echo '''
+	println '''
 	************************************************************
 	* Your grails-app/conf/Config.groovy has been updated with *
 	* default configurations of Mahout Recommender;            *

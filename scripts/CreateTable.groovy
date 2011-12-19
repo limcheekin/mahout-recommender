@@ -23,7 +23,7 @@ import groovy.sql.Sql
 import org.apache.mahout.cf.taste.impl.model.jdbc.AbstractJDBCDataModel
 import org.apache.mahout.cf.taste.impl.recommender.slopeone.jdbc.AbstractJDBCDiffStorage
 
-includeTargets << grailsScript("_GrailsBootstrap")
+includeTargets << new File("${mahoutRecommenderPluginDir}/scripts/_Common.groovy")
 
 target(main: "Create table") {
 	depends(bootstrap)
@@ -53,6 +53,6 @@ createTable = { String tableName, String sqlFile ->
 	Sql sql = new Sql(grailsApp.mainContext.dataSource)
 	sqlStrings = new File(sqlFile).text.trim().split(";")
 	sqlStrings.each { sqlString -> sql.execute sqlString }
-	ant.echo "$tableName table created."
+	printMessage "$tableName table created."
 }
 

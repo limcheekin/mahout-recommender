@@ -20,7 +20,7 @@
 * @since 0.5
 */
 
-includeTargets << grailsScript("_GrailsBootstrap")
+includeTargets << new File("${mahoutRecommenderPluginDir}/scripts/_Common.groovy")
 
 target(acceptInput: "Accept recommender builder input") {
 	depends(bootstrap)
@@ -124,7 +124,8 @@ target(acceptInput: "Accept recommender builder input") {
 }
 
 private printOpenLine() {
-  println "\n\t***************** Recommender Settings *****************\n"
+  println "\n\t***************** Recommender Settings *****************"
+  println ""
 }
 
 private printCloseLine() {

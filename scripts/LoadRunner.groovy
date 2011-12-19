@@ -40,7 +40,7 @@ target(main: "run load evaluation runner to evaluate performance") {
 		LoadEvaluator.runLoad recommender
 		/* To be supported in 0.6
 		loadStats = LoadEvaluator.runLoad(recommender, howMany) 
-		if (loadStats) echo "$i) $loadStats" 
+		if (loadStats) println "$i) $loadStats" 
 		*/
 	 }
 }

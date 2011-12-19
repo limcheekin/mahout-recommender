@@ -36,7 +36,7 @@ target(main: "Evaluating average difference") {
 	score = mahoutRecommenderSupport.evaluateAverageDifference(recommenderSelected, hasPreference, similarity, 
 					withWeighting, neighborhood, trainingPercentage, evaluationPercentage)
 	
-	echo "score = $score"
+	printMessage "score = $score"
 }
 
 setDefaultTarget(main)

@@ -39,7 +39,7 @@ target(main: "Evaluating precision and recall") {
 	stats = mahoutRecommenderSupport.getIRStatistics(recommenderSelected, hasPreference, similarity, 
 					withWeighting, neighborhood, relevanceThreshold, at, evaluationPercentage)
 	
-	echo "precision = $stats.precision, recall = $stats.recall"
+	printMessage "precision = $stats.precision, recall = $stats.recall"
 }
 
 setDefaultTarget(main)
