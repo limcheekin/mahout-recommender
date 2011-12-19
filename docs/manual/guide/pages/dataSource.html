@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>3.2 The DataSource 0.5</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs" style="display:none;">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction to Mahout Recommender plugin</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>3</strong><span>Configuration</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/commandLine.html"><strong>4</strong><span>The Command Line</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/recommenderController.html"><strong>5</strong><span>Recommender Controller</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/sampleApplication.html"><strong>6</strong><span>The Libimseti Sample Application</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/consulting.html"><strong>7</strong><span>Consulting and Community Support</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Mahout Recommender Plugin - A Scalable Recommendation System</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>2</strong><span>Getting Started</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/commandLine.html"><strong>4</strong><span>The Command Line</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>3.2 The DataSource - Reference Documentation</h1>
+
+                    <p><strong>Authors:</strong> Lim Chee Kin</p>
+
+                    <p><strong>Version:</strong> 0.5</p>
+
+                    
+                </div>
+
+                
+
+                
+
+<h2 id="dataSource">3.2 The DataSource</h2>
+The plugin is using file data model by default, this section will described step-by-step 
+of how to setup your project to use MySQL data model with assumption that MySQL database 
+is pre-installed and started in your development workstation.<p class="paragraph"/>h3.&#60;space&#62;Steps to setup Mahout Recommendation Plugin with MySQL database
+h4.&#60;space&#62;Create Recommender Database in MySQL
+<ul class="star">
+<li>Login to MySQL using command below:</li>
+</ul><p class="paragraph"/><div class="code"><pre>mysql &#45;u root</pre></div>
+<ul class="star">
+<li>Create recommender database using command below:</li>
+</ul><p class="paragraph"/><div class="code"><pre>create database recommender</pre></div><p class="paragraph"/>h4.&#60;space&#62;Download and Setup MySQL Connector/J (JDBC Driver)
+<ul class="star">
+<li>Download latest MySQL Connector/J at http://www.mysql.com/downloads/connector/j/</li>
+<li>Extract the downloaded compressed file and copy the mysql-connector-java-5.1.x-bin.jar to lib directory of your grails application.</li>
+</ul><p class="paragraph"/>h4.&#60;space&#62;Update Config.groovy
+<ul class="star">
+<li>Update <code>mahout.recommender.data.model</code> in grails-app/conf/Config.groovy from 'file' to 'mysql', for example:</li>
+</ul><p class="paragraph"/><div class="code"><pre>mahout.recommender.data.model = 'mysql'  // 'file' or 'mysql'</pre></div><p class="paragraph"/>h4.&#60;space&#62;Update Datasource.groovy
+<ul class="star">
+<li>Update database configurations in <code>grails-app/conf/DataSource.groovy</code> from HSQL or H2 to MySQL, for example:</li>
+</ul><p class="paragraph"/><div class="code"><pre>dataSource &#123;
+    pooled = <span class="java&#45;keyword">true</span>
+    driverClassName = <span class="java&#45;quote">"com.mysql.jdbc.Driver"</span>
+    username = <span class="java&#45;quote">"root"</span>
+    password = <span class="java&#45;quote">""</span>
+&#125;
+hibernate &#123;
+    cache.use_second_level_cache = <span class="java&#45;keyword">true</span>
+    cache.use_query_cache = <span class="java&#45;keyword">true</span>
+    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
+&#125;
+// environment specific settings
+environments &#123;
+    development &#123;
+        dataSource &#123;
+            dbCreate = <span class="java&#45;quote">"create&#45;drop"</span> // one of 'create', 'create&#45;drop','update'
+            url = <span class="java&#45;quote">"jdbc:mysql://localhost:3306/recommender"</span>
+        &#125;
+    &#125;
+    test &#123;
+        dataSource &#123;
+            dbCreate = <span class="java&#45;quote">"create&#45;drop"</span>          
+            url = <span class="java&#45;quote">"jdbc:mysql://localhost:3306/recommender"</span>
+        &#125;
+    &#125;
+    production &#123;
+        dataSource &#123;
+            dbCreate = <span class="java&#45;quote">"update"</span>
+            url = <span class="java&#45;quote">"jdbc:mysql://localhost:3306/recommender"</span>
+        &#125;
+    &#125;
+&#125;</pre></div><p class="paragraph"/>To save your typing, you can download the MySQL's DataSource.groovy <a href="https://github.com/limcheekin/mahout-recommender/raw/master/grails-app/conf/DataSource.groovy." target="blank">here</a><p class="paragraph"/>Done! You should able run your mahout recommender application with MySQL data model without any problem.
+
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>2</strong><span>Getting Started</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/commandLine.html"><strong>4</strong><span>The Command Line</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Command Line</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/average-diff-evaluator.html">average-diff-evaluator</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/create-table.html">create-table</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/import-data.html">import-data</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/install-libimseti-sample-app.html">install-libimseti-sample-app</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/irstats-evaluator.html">irstats-evaluator</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/load-runner.html">load-runner</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/recommender.html">recommender</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/uninstall-libimseti-sample-app.html">uninstall-libimseti-sample-app</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright 2011-2012 the original author or authors.
+    <a href="http://mahout.apache.org/"><img src="https://cwiki.apache.org/confluence/download/attachments/80899/mahout-logo-poweredby-55.png" alt="Mahout Powered By Logo" /></a>
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

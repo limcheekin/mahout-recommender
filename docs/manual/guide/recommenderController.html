@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>5 The Recommender Controller 0.5</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs" style="display:none;">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction to Mahout Recommender plugin</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/configuration.html"><strong>3</strong><span>Configuration</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/commandLine.html"><strong>4</strong><span>The Command Line</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/recommenderController.html"><strong>5</strong><span>The Recommender Controller</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/sampleApplication.html"><strong>6</strong><span>The Libimseti Sample Application</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../guide/consulting.html"><strong>7</strong><span>Consulting and Community</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Mahout Recommender Plugin - A Scalable Recommendation System</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/commandLine.html">&lt;&lt; <strong>4</strong><span>The Command Line</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/sampleApplication.html"><strong>6</strong><span>The Libimseti Sample Application</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>5 The Recommender Controller - Reference Documentation</h1>
+
+                    <p><strong>Authors:</strong> Lim Chee Kin</p>
+
+                    <p><strong>Version:</strong> 0.5</p>
+
+                    
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#evaluator"><strong>5.1</strong><span>Web-based Recommenders' Evaluator</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#webRecommender"><strong>5.2</strong><span>Web-based Recommender</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#restSupport"><strong>5.2.1</strong><span>REST Support</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+
+<h1 id="recommenderController">5 The Recommender Controller</h1>
+The recommender controller is enhanced version of mahout's RecommenderServlet implementation. 
+It included a web-based recommenders' evaluator to enabled user to find an effective recommender.
+
+
+<h2 id="evaluator">5.1 Web-based Recommenders' Evaluator</h2>
+The web-based recommenders' evaluator supports user to evaluate recommenders' 
+effectiveness by average difference. Recommenders under evaluation including 
+user-based recommender, item-based recommender and slope-one recommender with 
+different type of similarity metrics such as pearson correlation, euclidean distance,
+Log-likelihood and tanimoto coefficient.<p class="paragraph"/>By access to <a href="http://localhost:8080/<yourApplication>/recommender/evaluator" target="blank">http://localhost:8080/&#60;yourApplication&#62;/recommender/evaluator</a> 
+in your browser, you will see a screen similar to the following image:<p class="paragraph"/><img border="0" class="center" src="../img/evaluator.png"></img><p class="paragraph"/>Start running the evaluation process by click on "Run Evaluator" link.<p class="paragraph"/>
+
+
+
+<h2 id="webRecommender">5.2 Web-based Recommender</h2>
+The web-based recommender supports user to test recommender using web user interface 
+with or without debug-enabled.<p class="paragraph"/>By access to <a href="http://localhost:8080/<yourApplication>/recommender/settings" target="blank">http://localhost:8080/&#60;yourApplication&#62;/recommender/settings</a> 
+in your browser, you will see a screen similar to the following image:<p class="paragraph"/><img border="0" class="center" src="../img/settings.png"></img><p class="paragraph"/>After fill-in all required fields, click on "Submit" button to see the recommendations.<p class="paragraph"/><blockquote class="note">
+You can checked the check box of "Enabled debug?" to see the recommendation results with more debugging information.
+</blockquote><p class="paragraph"/><h3>Recommendations Without Debug-enabled</h3>
+<img border="0" class="center" src="../img/recommenderHTML.png"></img><p class="paragraph"/><h3>Recommendations With Debug-enabled</h3>
+<img border="0" class="center" src="../img/recommenderWithDebugEnabledHTML.png"></img> 
+
+
+
+<h2 id="restSupport">5.2.1 REST Support</h2>
+Besides display the recommendation results in HTML format, the web-based recommender 
+support return the results in XML and JSON format too.<p class="paragraph"/><h3>XML Recommended Items</h3>
+By access to the following URL in your browser:
+<div class="code"><pre>http://localhost:8080/&#60;yourApplication&#62;/recommender.xml?userID=1&#38;howMany=20&#38;
+r=1&#38;p=<span class="java&#45;keyword">true</span>&#38;s=PearsonCorrelation&#38;w=<span class="java&#45;keyword">true</span>&#38;n=4</pre></div><p class="paragraph"/>You will see XML message similar to the below display in your browser
+<div class="code"><pre><span class="xml&#45;tag">&#60;recommendedItems&#62;</span>
+  <span class="xml&#45;tag">&#60;item&#62;</span>
+    <span class="xml&#45;tag">&#60;value&#62;</span>5.0<span class="xml&#45;tag">&#60;/value&#62;</span>
+    <span class="xml&#45;tag">&#60;id&#62;</span>104<span class="xml&#45;tag">&#60;/id&#62;</span>
+  <span class="xml&#45;tag">&#60;/item&#62;</span>
+  <span class="xml&#45;tag">&#60;item&#62;</span>
+    <span class="xml&#45;tag">&#60;value&#62;</span>4.0<span class="xml&#45;tag">&#60;/value&#62;</span>
+    <span class="xml&#45;tag">&#60;id&#62;</span>106<span class="xml&#45;tag">&#60;/id&#62;</span>
+  <span class="xml&#45;tag">&#60;/item&#62;</span>
+<span class="xml&#45;tag">&#60;/recommendedItems&#62;</span></pre></div><p class="paragraph"/>If some error occur, you will see XML message similar to the following:
+<div class="code"><pre><span class="xml&#45;tag">&#60;error&#62;</span>
+  <span class="xml&#45;tag">&#60;message&#62;</span>Recommender cannot be blank.<span class="xml&#45;tag">&#60;/message&#62;</span>
+<span class="xml&#45;tag">&#60;/error&#62;</span></pre></div><p class="paragraph"/><h3>JSON Recommended Items</h3>
+By access to the following URL in your browser:
+<div class="code"><pre>http://localhost:8080/&#60;yourApplication&#62;/recommender.json?userID=1&#38;howMany=20&#38;
+r=1&#38;p=<span class="java&#45;keyword">true</span>&#38;s=PearsonCorrelation&#38;w=<span class="java&#45;keyword">true</span>&#38;n=4</pre></div>
+<blockquote class="note">
+The URL above is identical to the XML request, except it invoke to <code>recommender.json</code> 
+instead of <code>recommender.xml</code>.
+</blockquote><p class="paragraph"/>You will see JSON message similar to the below display in your browser
+<div class="code"><pre>&#123;<span class="java&#45;quote">"recommendedItems"</span>:&#91;&#123;<span class="java&#45;quote">"value"</span>:5,<span class="java&#45;quote">"id"</span>:104&#125;,&#123;<span class="java&#45;quote">"value"</span>:4,<span class="java&#45;quote">"id"</span>:106&#125;&#93;&#125;</pre></div><p class="paragraph"/>If some error occur, you will see JSON message similar to the following:
+<div class="code"><pre>&#123;<span class="java&#45;quote">"error"</span>:&#123;<span class="java&#45;quote">"message"</span>:<span class="java&#45;quote">"Recommender cannot be blank."</span>&#125;&#125;</pre></div><p class="paragraph"/><h3>Usage</h3>
+<div class="code"><pre>http://localhost:8080/&#60;yourApplication&#62;/recommender.&#91;json|xml&#93;?
+userID=&#91;<span class="java&#45;object">Long</span>&#93;&#38;howMany=&#91;<span class="java&#45;object">Integer</span>&#93;&#38;r=&#91;1|2|3&#93;&#38;p=&#91;<span class="java&#45;keyword">true</span>|<span class="java&#45;keyword">false</span>&#93;&#38;
+s=&#91;PearsonCorrelation|EuclideanDistance|LogLikelihood|TanimotoCoefficient&#93;&#38;
+w=&#91;<span class="java&#45;keyword">true</span>|<span class="java&#45;keyword">false</span>&#93;&#38;n=&#91;<span class="java&#45;object">Integer</span>|<span class="java&#45;object">Double</span>&#93;</pre></div>
+<ol>
+<li>File extension: <code>recommender.xml</code> for XML request, <code>recommender.json</code> for JSON request.</li>
+<li><code>userID</code>: Specify user ID. in numeric value as java.lang.Long type.</li>
+<li><code>howMany</code>: Specify expected number of recommendations return in numeric value as java.lang.Integer type.</li>
+<li><code>r</code>: Specify recommender. Valid values: 1, 2 or 3 (1. user-based, 2. item-based or 3. slope-one).</li>
+<li><code>p</code>: Specify "has preference value". Valid values: true or false.</li>
+<li><code>s</code>: Specify similarity metric. Valid values: PearsonCorrelation, EuclideanDistance, LogLikelihood or TanimotoCoefficient.</li>
+<li><code>w</code>: Specify whether weighting is enabled. Valid values: true or false. Applicable to 'PearsonCorrelation' or 'EuclideanDistance' similarity metric or Slope-one recommender only.</li>
+<li><code>n</code>: Specify whether fix-size neighborhood or threshold-based neighborhood when user-based recommender is selected in <code>r</code> above. Integer value for fix-size neighborhood such as 4 and Double value (&#60; 1.0) for threshold-based neighborhood such as 0.5.</li>
+</ol><p class="paragraph"/><blockquote class="note">
+Item 4 to 8 above need to be specified only when <code>mahout.recommender.mode = 'input'</code> in <code>Config.groovy</code> file.
+</blockquote>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/commandLine.html">&lt;&lt; <strong>4</strong><span>The Command Line</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/sampleApplication.html"><strong>6</strong><span>The Libimseti Sample Application</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Command Line</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../ref/Command%20Line/average-diff-evaluator.html">average-diff-evaluator</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Command%20Line/create-table.html">create-table</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Command%20Line/import-data.html">import-data</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Command%20Line/install-libimseti-sample-app.html">install-libimseti-sample-app</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Command%20Line/irstats-evaluator.html">irstats-evaluator</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Command%20Line/load-runner.html">load-runner</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Command%20Line/recommender.html">recommender</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../ref/Command%20Line/uninstall-libimseti-sample-app.html">uninstall-libimseti-sample-app</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright 2011-2012 the original author or authors.
+    <a href="http://mahout.apache.org/" target="_blank"><img src="https://cwiki.apache.org/confluence/download/attachments/80899/mahout-logo-poweredby-55.png" alt="Mahout Powered By Logo" border="0" /></a>
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

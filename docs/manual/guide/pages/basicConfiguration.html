@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>3.1 Basic Configuration 0.5</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <ul>
+        <li>
+            <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                <div id="nav-summary-childs" style="display:none;">
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction to Mahout Recommender plugin</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>3</strong><span>Configuration</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/commandLine.html"><strong>4</strong><span>The Command Line</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/recommenderController.html"><strong>5</strong><span>The Recommender Controller</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/sampleApplication.html"><strong>6</strong><span>The Libimseti Sample Application</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0"><a href="../../guide/consulting.html"><strong>7</strong><span>Consulting and Community</span></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </li>
+        <li class="separator selected">
+            <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+        </li>
+    </ul>
+</div>
+<div id="header">
+    <div class="images clearfix">
+        
+        
+    </div>
+    <p>Mahout Recommender Plugin - A Scalable Recommendation System</p>
+</div>
+
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>2</strong><span>Getting Started</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/commandLine.html"><strong>4</strong><span>The Command Line</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>3.1 Basic Configuration - Reference Documentation</h1>
+
+                    <p><strong>Authors:</strong> Lim Chee Kin</p>
+
+                    <p><strong>Version:</strong> 0.5</p>
+
+                    
+                </div>
+
+                
+
+                
+
+<h2 id="basicConfiguration">3.1 Basic Configuration</h2>
+The following table described configuration items in <code>Config.groovy</code> supported by the plugin:
+<ul class="star">
+<li>Item 10 to 21 below only applicable when <code>mahout.recommender.data.model = 'mysql'</code></li>
+<li>MahoutRecommenderConstants = org.grails.mahout.recommender.MahoutRecommenderConstants</li>
+<li>AbstractJDBCDataModel = org.apache.mahout.cf.taste.impl.model.jdbc.AbstractJDBCDataModel</li>
+<li>AbstractJDBCDiffStorage = org.apache.mahout.cf.taste.impl.recommender.slopeone.jdbc.AbstractJDBCDiffStorage</li>
+</ul><p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">No.</strong></th><th><strong class="bold">Configuration Item</strong></th><th><strong class="bold">Description</strong></th></tr><tr class="table-odd"><td>1.</td><td>mahout.recommender.mode</td><td>Specify mode to determine recommender to be used. Default value is 'input' specified in <code>MahoutRecommenderConstants.DEFAULT_MODE</code>. Valid values: 'input', 'config' or 'class'. In 'input' mode, user need to specify value for item 5 to 9 below on screen. In 'config' mode, it will take values configured in item 5 to 9 below. In 'class' mode, it will take value specified in <code>mahout.recommender.builderClass</code>.</td></tr><tr class="table-even"><td>2.</td><td>mahout.recommender.data.model</td><td>Specify which data model to be used. Default value is 'file' specified in <code>MahoutRecommenderConstants.DEFAULT_DATA_MODEL</code>. Valid values: 'file' or 'mysql'. When the value is 'file'data file name must be specified in <code>mahout.recommender.data.file</code> for web-based tools such as <a href="../guide/single.html#evaluator" class="guide">recommenders' evaluator</a> and recommender.</td></tr><tr class="table-odd"><td>3.</td><td>mahout.recommender.data.file</td><td>Data file to be loaded by <code>FileDataModel</code>. Default value is 'data.csv' specified in <code>MahoutRecommenderConstants.DEFAULT_DATA_FILE</code>. The data file specified must me located in classpath such as <code>grails-app/config</code>.</td></tr><tr class="table-even"><td>4.</td><td>mahout.recommender.builderClass</td><td>Recommender to be loaded when <code>mahout.recommender.mode</code> is 'class'. Value specified must be full class name of the class that implements <code>org.apache.mahout.cf.taste.eval.RecommenderBuilder</code> such as <code>'mia.recommender.ch05.LibimsetiRecommenderBuilder'</code>.</td></tr><tr class="table-odd"><td>5.</td><td>mahout.recommender.hasPreference</td><td>Specify "has preference value" when <code>mahout.recommender.mode</code> is 'config'. Valid values: true or false.</td></tr><tr class="table-even"><td>6.</td><td>mahout.recommender.selected</td><td>Specify recommender when <code>mahout.recommender.mode</code> is 'config'. Valid values: 1, 2 or 3 (1. user-based, 2. item-based or 3. slope-one).</td></tr><tr class="table-odd"><td>7.</td><td>mahout.recommender.similarity</td><td>Specify similarity metric when <code>mahout.recommender.mode</code> is 'config'. Valid values: 'PearsonCorrelation', 'EuclideanDistance', 'LogLikelihood' or 'TanimotoCoefficient'.</td></tr><tr class="table-even"><td>8.</td><td>mahout.recommender.withWeighting</td><td>Specify whether weighting is enabled when <code>mahout.recommender.mode</code> is 'config'. Valid values: true or false. Applicable to 'PearsonCorrelation' or 'EuclideanDistance' similarity metric or Slope-one recommender only.</td></tr><tr class="table-odd"><td>9.</td><td>mahout.recommender.neighborhood</td><td>Specify whether fix-size neighborhood or threshold-based neighborhood to be used when <code>mahout.recommender.mode</code> is 'config' and user-based recommender is selected. Integer value for fix-size neighborhood such as 4 and decimal value (&#60; 1.0) for threshold-based neighborhood such as 0.5.</td></tr><tr class="table-even"><td>10.</td><td>mahout.recommender.preference.table</td><td>Overwrite default value 'taste_preferences' specified in <code>AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE</code>.</td></tr><tr class="table-odd"><td>11.</td><td>mahout.recommender.preference.userIdColumn</td><td>Overwrite default value 'user_id' specified in <code>AbstractJDBCDataModel.DEFAULT_USER_ID_COLUMN</code>.</td></tr><tr class="table-even"><td>12.</td><td>mahout.recommender.preference.itemIdColumn</td><td>Overwrite default value 'item_id' specified in <code>AbstractJDBCDataModel.DEFAULT_ITEM_ID_COLUMN</code>.</td></tr><tr class="table-odd"><td>13.</td><td>mahout.recommender.preference.valueColumn</td><td>Overwrite default value 'preference' specified in <code>AbstractJDBCDataModel.DEFAULT_PREFERENCE_COLUMN</code>.</td></tr><tr class="table-even"><td>14.</td><td>mahout.recommender.preference.timestampColumn</td><td>Overwrite default value 'last_updated' specified in <code>MahoutRecommenderConstants.DEFAULT_PREFERENCE_TIME_COLUMN</code>.</td></tr><tr class="table-odd"><td>15.</td><td>mahout.recommender.slopeone.diffs.table</td><td>Overwrite default value 'taste_slopeone_diffs' specified in <code>AbstractJDBCDiffStorage.DEFAULT_DIFF_TABLE</code>.</td></tr><tr class="table-even"><td>16.</td><td>mahout.recommender.slopeone.diffs.itemIDAColumn</td><td>Overwrite default value 'item_id_a' specified in <code>AbstractJDBCDiffStorage.DEFAULT_ITEM_A_COLUMN</code>.</td></tr><tr class="table-odd"><td>17.</td><td>mahout.recommender.slopeone.diffs.itemIDBColumn</td><td>Overwrite default value 'item_id_b' specified in <code>AbstractJDBCDiffStorage.DEFAULT_ITEM_B_COLUMN</code>.</td></tr><tr class="table-even"><td>18.</td><td>mahout.recommender.slopeone.diffs.countColumn</td><td>Overwrite default value 'count' specified in <code>AbstractJDBCDiffStorage.DEFAULT_COUNT_COLUMN</code>.</td></tr><tr class="table-odd"><td>19.</td><td>mahout.recommender.slopeone.diffs.avgColumn</td><td>Overwrite default value 'average_diff' specified in <code>AbstractJDBCDiffStorage.DEFAULT_AVERAGE_DIFF_COLUMN</code>.</td></tr><tr class="table-even"><td>20.</td><td>mahout.recommender.slopeone.diffs.stdevColumn</td><td>Overwrite default value 'standard_deviation' specified in <code>AbstractJDBCDiffStorage.DEFAULT_STDEV_COLUMN</code>.</td></tr><tr class="table-odd"><td>21.</td><td>mahout.recommender.slopeone.diffs.minDiffCount</td><td>Overwrite default value 2 specified in <code>MahoutRecommenderConstants.DEFAULT_SLOPEONE_DIFFS_MIN_COUNT</code>.</td></tr><tr class="table-even"><td>22.</td><td>mahout.recommender.evaluator.trainingPercentage</td><td>Overwrite default value 0.7 specified in <code>MahoutRecommenderConstants.DEFAULT_TRAINING_PERCENTAGE</code>.</td></tr><tr class="table-odd"><td>23.</td><td>mahout.recommender.evaluator.evaluationPercentage</td><td>Overwrite default value 1.0 specified in <code>MahoutRecommenderConstants.DEFAULT_EVALUATION_PERCENTAGE</code>.</td></tr></table>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/gettingStarted.html">&lt;&lt; <strong>2</strong><span>Getting Started</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/commandLine.html"><strong>4</strong><span>The Command Line</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                    <div class="menu-block"><h1 class="menu-title" onclick="toggleRef(this.parentNode.childNodes[1])">Command Line</h1><div class="menu-sub">
+                        
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/average-diff-evaluator.html">average-diff-evaluator</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/create-table.html">create-table</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/import-data.html">import-data</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/install-libimseti-sample-app.html">install-libimseti-sample-app</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/irstats-evaluator.html">irstats-evaluator</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/load-runner.html">load-runner</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/recommender.html">recommender</a>
+                            </div>
+                            
+                            <div class="menu-item"><a href="../../ref/Command%20Line/uninstall-libimseti-sample-app.html">uninstall-libimseti-sample-app</a>
+                            </div>
+                            
+                            </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright 2011-2012 the original author or authors.
+    <a href="http://mahout.apache.org/" target="_blank"><img src="https://cwiki.apache.org/confluence/download/attachments/80899/mahout-logo-poweredby-55.png" alt="Mahout Powered By Logo" border="0" /></a>
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
