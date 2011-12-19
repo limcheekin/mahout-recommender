@@ -81,17 +81,15 @@ class RecommenderController {
 			json {
 				if (!flash.errors) {
 					render(contentType:"text/json") {
-						recommendedItems {
-							item {
-								for(recommendedItem in items) {
-									i(value: recommendedItem.value, id: recommendedItem.itemID)
-								}
+						recommendedItems = array {
+							for(recommendedItem in items) {
+								item value:recommendedItem.value, id:recommendedItem.itemID	
 							}
 						}
 					}
 				} else {
 					render(contentType:"text/json") {
-            error { message(flash.errors) }
+            error message: flash.errors 
 					}
 				}
 			}

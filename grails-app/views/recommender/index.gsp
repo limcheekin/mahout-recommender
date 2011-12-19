@@ -36,6 +36,7 @@
   <p>User ID: <span style="font-weight: bold">${params.userID}</span></p>
   <p>Recommender: <span style="font-weight: bold">${recommender}</span></p>
 	<h1>Top ${numOfTopPrefs} Preferences</h1>
+	<div class="list">
 	<table>
 		<thead>
 			<tr>

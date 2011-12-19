@@ -123,7 +123,13 @@
 		    <span class="valueStyle">${conf.mahout.recommender.builderClass}</span>
 		</td>
 	</tr>			
-	</g:else>				
+	</g:else>		
+	<tr>
+		<td>Enabled debug?</td>
+		<td>
+		  <g:checkBox name="debug" />
+		</td>
+	</tr>							
 	</tbody>
 </table>
 </div>
