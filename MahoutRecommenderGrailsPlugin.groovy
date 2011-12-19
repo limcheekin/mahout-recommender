@@ -44,7 +44,7 @@ With the plugin, you can find an effective recommender, evaluating precision and
 selected recommender without writing single line of code. 
 
 * Project Site: [https://github.com/limcheekin/mahout-recommender] 
-* Documentation: [http://code.google.com/p/grails-activiti-plugin/]
+* Documentation: [http://limcheekin.github.com/mahout-recommender]
 * Support: [https://github.com/limcheekin/mahout-recommender/issues] 
 * Discussion Forum: [http://groups.google.com/group/grails-mahout-recommender]
 '''

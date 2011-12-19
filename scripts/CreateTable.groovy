@@ -20,6 +20,8 @@
  * @since 0.5
  */
 import groovy.sql.Sql
+import org.apache.mahout.cf.taste.impl.model.jdbc.AbstractJDBCDataModel
+import org.apache.mahout.cf.taste.impl.recommender.slopeone.jdbc.AbstractJDBCDiffStorage
 
 includeTargets << grailsScript("_GrailsBootstrap")
 
@@ -32,15 +34,15 @@ target(main: "Create table") {
 	tableSelected = ant.antProject.properties["tableSelected"] as Integer
 	switch (tableSelected) {
 		case 1:
-			createTable grailsApp.config.mahout.recommender.preference.table,
+			createTable grailsApp.config.mahout.recommender.preference.table?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE,
 					"${mahoutRecommenderPluginDir}/src/sql/mysql_preference.sql"
 		  break
 		case 2:
-			createTable grailsApp.config.mahout.recommender.preference.table,
+			createTable grailsApp.config.mahout.recommender.preference.table?:AbstractJDBCDataModel.DEFAULT_PREFERENCE_TABLE,
 					"${mahoutRecommenderPluginDir}/src/sql/mysql_boolean_preference.sql"
 			break
 		case 3:
-			createTable grailsApp.config.mahout.recommender.slopeone.diffs.table,
+			createTable grailsApp.config.mahout.recommender.slopeone.diffs.table?:AbstractJDBCDiffStorage.DEFAULT_DIFF_TABLE,
 					"${mahoutRecommenderPluginDir}/src/sql/mysql_slopeone_diffs.sql"
 	}
 }
