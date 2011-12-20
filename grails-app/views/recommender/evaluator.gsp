@@ -18,143 +18,19 @@
  * @since 0.5
  */
  --%>
+<g:set var="grailsMajorVersion" value="${grailsApplication.metadata['app.grails.version'].charAt(0) as Integer}" />
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="layout" content="main" />
 <title>Finding an effective recommender by average difference</title>
-<g:javascript library="jquery" plugin="jquery" />
-<script type="text/javascript">
-	$(function() {
-		$('#evaluatorMenuButton').click(runEvaluator);
-	});
-	function runEvaluator(event) {
-		evaluateUserBasedRecommender('fixedSizeNeighborhoodWithPref', true);
-		scrollToElement('thresholdNeighborhoodWithPrefHeader');
-		evaluateUserBasedRecommender('thresholdNeighborhoodWithPref', true);
-		evaluateUserBasedRecommender('fixedSizeNeighborhoodWithoutPref', false);
-		scrollToElement('thresholdNeighborhoodWithoutPrefHeader');
-		evaluateUserBasedRecommender('thresholdNeighborhoodWithoutPref', false);
-		evaluateItemBasedRecommender('itemWithPref', true);		
-		evaluateItemBasedRecommender('itemWithoutPref', false);	
-		scrollToElement('slopeOneRecommender');
-		evaluateSlopeOneRecommender('#weight', true);	
-		evaluateSlopeOneRecommender('#unweight', false);	
-		return false;
-	}
-
-	function evaluateUserBasedRecommender(tableId, hasPreference) {
-		var $table = $('#' + tableId);
-		var $rowHeaders = $('tr th', $table);
-		var $rowDatas = $('tr td', $table);
-		var j = 0;
-		var similarity;
-		var weightingIndex;
-		var withWeighting;
-		var data = new Object();
-		var $td;
-		
-		for (var i = 0; i < $rowDatas.length; i++) {
-			j = i % 11;
-			$td = $($rowDatas[i]);
-			if (j == 0) {
-				similarity = $td.text();
-				weightingIndex = similarity.indexOf('+');
-				withWeighting = weightingIndex > -1;
-				if (withWeighting) {
-					similarity = similarity.substring(0, weightingIndex - 1);
-				} 
-			} else {
-				data['recommenderSelected'] = 1;
-				data['hasPreference'] = hasPreference;
-				data['similarity'] = similarity;
-				data['withWeighting'] = withWeighting;
-				data['neighborhood'] = $($rowHeaders[j]).text();  
-				
-				$.ajax({
-					url : 'evaluateAverageDiff',
-					dataType: "text",
-					data: data,
-					async: false,
-					success : function(response) {
-						$td.text(response);
-					},
-					error : function() {
-						$td.html('<span style="color:red">Err</span>');
-					}
-				}); 
-			}
-		}				
-	}
-
-	function evaluateItemBasedRecommender(tableId, hasPreference) {
-		var $table = $('#' + tableId);
-		var $rowDatas = $('tr td', $table);
-		var j = 0;
-		var similarity;
-		var weightingIndex;
-		var withWeighting;
-		var data = new Object();
-		var $td;
-		
-		for (var i = 0; i < $rowDatas.length; i++) {
-			j = i % 2;
-			$td = $($rowDatas[i]);
-			if (j == 0) {
-				similarity = $td.text();
-				weightingIndex = similarity.indexOf('+');
-				withWeighting = weightingIndex > -1;
-				if (withWeighting) {
-					similarity = similarity.substring(0, weightingIndex - 1);
-				} 
-			} else {
-				data['recommenderSelected'] = 2;
-				data['hasPreference'] = hasPreference;
-				data['similarity'] = similarity;
-				data['withWeighting'] = withWeighting;  
-				
-				$.ajax({
-					url : 'evaluateAverageDiff',
-					dataType: "text",
-					data: data,
-					async: false,
-					success : function(response) {
-						$td.text(response);
-					},
-					error : function() {
-						$td.html('<span style="color:red">Err</span>');
-					}
-				}); 
-			}
-		}				
-	}
-
-	function evaluateSlopeOneRecommender(selector, withWeighting) {
-		var data = new Object();
-		var $td = $(selector);
-		data['withWeighting'] = withWeighting;  
-		data['recommenderSelected'] = 3;
-		
-		$.ajax({
-			url : 'evaluateAverageDiff',
-			dataType: "text",
-			data: data,
-			async: false,
-			success : function(response) {
-				$td.text(response);
-			},
-			error : function() {
-				$td.html('<span style="color:red">Err</span>');
-			}
-		}); 	
-	}	
-	
-function scrollToElement(id) {
-	  var new_position = $('#' + id).offset();
-	  window.scrollTo(new_position.left,new_position.top);
-}	
-
-</script>
+<g:if test="${grailsMajorVersion == 2}">
+  <r:require module="jquery"/>
+  <r:layoutResources/>
+</g:if>
+<g:else>
+  <g:javascript library="jquery" plugin="jquery" />
+</g:else>
 <style type="text/css">
 .mask{
    position: relative;
@@ -595,7 +471,139 @@ neighborhood.
 		</tbody>
 	</table>
 	</div>  
- 
 </div>
+<g:if test="${grailsMajorVersion == 2}">
+  <r:layoutResources/>
+</g:if>
+<script type="text/javascript">
+	$(function() {
+		$('#evaluatorMenuButton').click(runEvaluator);
+	});
+	function runEvaluator(event) {
+		evaluateUserBasedRecommender('fixedSizeNeighborhoodWithPref', true);
+		scrollToElement('thresholdNeighborhoodWithPrefHeader');
+		evaluateUserBasedRecommender('thresholdNeighborhoodWithPref', true);
+		evaluateUserBasedRecommender('fixedSizeNeighborhoodWithoutPref', false);
+		scrollToElement('thresholdNeighborhoodWithoutPrefHeader');
+		evaluateUserBasedRecommender('thresholdNeighborhoodWithoutPref', false);
+		evaluateItemBasedRecommender('itemWithPref', true);		
+		evaluateItemBasedRecommender('itemWithoutPref', false);	
+		scrollToElement('slopeOneRecommender');
+		evaluateSlopeOneRecommender('#weight', true);	
+		evaluateSlopeOneRecommender('#unweight', false);	
+		return false;
+	}
+
+	function evaluateUserBasedRecommender(tableId, hasPreference) {
+		var $table = $('#' + tableId);
+		var $rowHeaders = $('tr th', $table);
+		var $rowDatas = $('tr td', $table);
+		var j = 0;
+		var similarity;
+		var weightingIndex;
+		var withWeighting;
+		var data = new Object();
+		var $td;
+		
+		for (var i = 0; i < $rowDatas.length; i++) {
+			j = i % 11;
+			$td = $($rowDatas[i]);
+			if (j == 0) {
+				similarity = $td.text();
+				weightingIndex = similarity.indexOf('+');
+				withWeighting = weightingIndex > -1;
+				if (withWeighting) {
+					similarity = similarity.substring(0, weightingIndex - 1);
+				} 
+			} else {
+				data['recommenderSelected'] = 1;
+				data['hasPreference'] = hasPreference;
+				data['similarity'] = similarity;
+				data['withWeighting'] = withWeighting;
+				data['neighborhood'] = $($rowHeaders[j]).text();  
+				
+				$.ajax({
+					url : 'evaluateAverageDiff',
+					dataType: "text",
+					data: data,
+					async: false,
+					success : function(response) {
+						$td.text(response);
+					},
+					error : function() {
+						$td.html('<span style="color:red">Err</span>');
+					}
+				}); 
+			}
+		}				
+	}
+
+	function evaluateItemBasedRecommender(tableId, hasPreference) {
+		var $table = $('#' + tableId);
+		var $rowDatas = $('tr td', $table);
+		var j = 0;
+		var similarity;
+		var weightingIndex;
+		var withWeighting;
+		var data = new Object();
+		var $td;
+		
+		for (var i = 0; i < $rowDatas.length; i++) {
+			j = i % 2;
+			$td = $($rowDatas[i]);
+			if (j == 0) {
+				similarity = $td.text();
+				weightingIndex = similarity.indexOf('+');
+				withWeighting = weightingIndex > -1;
+				if (withWeighting) {
+					similarity = similarity.substring(0, weightingIndex - 1);
+				} 
+			} else {
+				data['recommenderSelected'] = 2;
+				data['hasPreference'] = hasPreference;
+				data['similarity'] = similarity;
+				data['withWeighting'] = withWeighting;  
+				
+				$.ajax({
+					url : 'evaluateAverageDiff',
+					dataType: "text",
+					data: data,
+					async: false,
+					success : function(response) {
+						$td.text(response);
+					},
+					error : function() {
+						$td.html('<span style="color:red">Err</span>');
+					}
+				}); 
+			}
+		}				
+	}
+
+	function evaluateSlopeOneRecommender(selector, withWeighting) {
+		var data = new Object();
+		var $td = $(selector);
+		data['withWeighting'] = withWeighting;  
+		data['recommenderSelected'] = 3;
+		
+		$.ajax({
+			url : 'evaluateAverageDiff',
+			dataType: "text",
+			data: data,
+			async: false,
+			success : function(response) {
+				$td.text(response);
+			},
+			error : function() {
+				$td.html('<span style="color:red">Err</span>');
+			}
+		}); 	
+	}	
+	
+function scrollToElement(id) {
+	  var new_position = $('#' + id).offset();
+	  window.scrollTo(new_position.left,new_position.top);
+}	
+</script>
 </body>
 </html>

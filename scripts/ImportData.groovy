@@ -78,7 +78,7 @@ target(main: "Insert data file to database") {
 			}
 		}
 		fr.close()
-		println "[Done. $lineCount rows imported.]"
+		printMessage "[Done. $lineCount rows imported.]"
 	}
 }
 
