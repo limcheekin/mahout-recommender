@@ -1,5 +1,9 @@
+*20-Dec-2011 0.5.1*
+* Fixed issue [#1|https://github.com/limcheekin/mahout-recommender/issues/1]: The web-based recommenders' evaluator is broken in Grails 2.0.0.
+* Fixed issue [#2|https://github.com/limcheekin/mahout-recommender/issues/2]: Improve interactivity of web-based recommenders' evaluator.
+
 *18-Dec-2011 0.5*
 * First release of the plugin.
 * Included Apache Mahout 0.5 jar files.
 * Introduced command line: [average-diff-evaluator|Command Line], [create-table|Command Line], [import-data|Command Line], [install-libimseti-sample-app|Command Line], [irstats-evaluator|Command Line], [load-runner|Command Line], [recommender|Command Line] and [uninstall-libimseti-sample-app|Command Line].
-* Introduced recommender controller (port of RecommenderServlet) and web-based recommenders' evaluator.
+* Introduced recommender controller (enhanced version of Mahout's RecommenderServlet) and web-based recommenders' evaluator.

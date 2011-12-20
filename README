@@ -1,6 +1,4 @@
-The Mahout Recommender plugin enabled you to use Apache Mahout (http://mahout.apache.org/) recommendation algorithms in your Grails project.
-With the plugin, you can find an effective recommender, evaluating precision and recall, and evaluating the performance of the 
-selected recommender without writing single line of code. 
+The Mahout Recommender plugin enabled you to use Apache Mahout (http://mahout.apache.org/) recommendation algorithms in your Grails project. With the plugin, you can find an effective recommender, evaluating precision and recall, and evaluating the performance of the selected recommender without writing single line of code. 
 
 * Grails Plugin Page: http://grails.org/plugin/mahout-recommender
 * Documentation: http://limcheekin.github.com/mahout-recommender

@@ -125,7 +125,7 @@ target(acceptInput: "Accept recommender builder input") {
 
 private printOpenLine() {
   println "\n\t***************** Recommender Settings *****************"
-  println ""
+  println "                                                            "
 }
 
 private printCloseLine() {
