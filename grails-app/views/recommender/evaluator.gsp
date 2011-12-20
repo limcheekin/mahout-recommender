@@ -67,7 +67,7 @@
 <body>
 <div class="nav">
   <span class="menuButton"><a class="home" href="\${createLink(uri: '/')}"><g:message code="default.home.label" /></a></span>
-  <span class="menuButton"><a id="evaluatorMenuButton" href="#">Run Evaluator</a></span>
+  <span class="menuButton"><span id="inProgessLabel" style="display: none">Evaluation processing...</span><a id="evaluatorMenuButton" href="#">Run Evaluator</a></span>
 </div>
 <div class="body">
 <h1>Finding An Effective Recommender By Average Difference</h1>
@@ -480,6 +480,7 @@ neighborhood.
 		$('#evaluatorMenuButton').click(runEvaluator);
 	});
 	function runEvaluator(event) {
+		toggleMenuButton();
 		evaluateUserBasedRecommender('fixedSizeNeighborhoodWithPref', true);
 		scrollToElement('thresholdNeighborhoodWithPrefHeader');
 		evaluateUserBasedRecommender('thresholdNeighborhoodWithPref', true);
@@ -490,7 +491,8 @@ neighborhood.
 		evaluateItemBasedRecommender('itemWithoutPref', false);	
 		scrollToElement('slopeOneRecommender');
 		evaluateSlopeOneRecommender('#weight', true);	
-		evaluateSlopeOneRecommender('#unweight', false);	
+		evaluateSlopeOneRecommender('#unweight', false);
+		toggleMenuButton();	
 		return false;
 	}
 
@@ -604,6 +606,21 @@ function scrollToElement(id) {
 	  var new_position = $('#' + id).offset();
 	  window.scrollTo(new_position.left,new_position.top);
 }	
+
+function toggleMenuButton() {
+	var $evaluatorMenuButton = $('#evaluatorMenuButton');
+	if ($evaluatorMenuButton.is(":visible")) {
+		$evaluatorMenuButton.hide();
+		$('#spinner').show();
+		$('#inProgessLabel').show();		
+		$('body').css("cursor", "progress");
+	} else {
+		$('#spinner').hide();
+		$('body').css("cursor", "auto");
+		$('#inProgessLabel').hide();		
+		$evaluatorMenuButton.show();
+	}
+}
 </script>
 </body>
 </html>
