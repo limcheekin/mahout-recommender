@@ -1,6 +1,6 @@
 *20-Dec-2011 0.5.1*
-* Fixed issue [#1|https://github.com/limcheekin/mahout-recommender/issues/1]: The web-based recommenders' evaluator is broken in Grails 2.0.0.
-* Fixed issue [#2|https://github.com/limcheekin/mahout-recommender/issues/2]: Improve interactivity of web-based recommenders' evaluator.
+* Fixed issue [#1|http://github.com/limcheekin/mahout-recommender/issues/1]: The web-based recommenders' evaluator is broken in Grails 2.0.0.
+* Fixed issue [#2|http://github.com/limcheekin/mahout-recommender/issues/2]: Improve interactivity of web-based recommenders' evaluator.
 
 *18-Dec-2011 0.5*
 * First release of the plugin.
