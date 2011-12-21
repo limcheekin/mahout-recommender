@@ -1,5 +1,6 @@
 introduction:
   title: Introduction to Mahout Recommender plugin
+  consulting: Consulting and Community
   changes: Change Log
 gettingStarted: Getting Started
 configuration:
@@ -14,6 +15,5 @@ recommenderController:
     title: Web-based Recommender  
     restSupport: REST Support
 sampleApplication: The Libimseti Sample Application
-consulting: Consulting and Community
  
   
