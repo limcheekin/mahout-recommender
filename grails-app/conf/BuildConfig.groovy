@@ -3,6 +3,7 @@ grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 grails.project.dependency.resolution = {
+    checksums false
     // inherit Grails' default dependencies
     inherits("global") {
         // uncomment to disable ehcache
@@ -27,21 +28,9 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.13'
-        compile ('org.apache.mahout:mahout-utils:0.5',
-            	 'org.apache.mahout:mahout-math:0.5',
-        		 'org.apache.mahout:mahout-core:0.5',
-        		 'org.uncommons.maths:uncommons-maths:1.2',
-        		 'com.google.guava:guava:r03',
-        		 'com.google.collections:google-collections:1.0-rc2') {
-        	excludes "slf4j-jcl"
-        }
-        runtime  ('org.apache.mahout:mahout-utils:0.5',
-        		 'org.apache.mahout:mahout-math:0.5',
-        		 'org.apache.mahout:mahout-core:0.5',
-        		 'org.uncommons.maths:uncommons-maths:1.2',
-        		 'com.google.guava:guava:r03',
-        		 'com.google.collections:google-collections:1.0-rc2') {
-        	excludes "slf4j-jcl"
-        }
+       compile ('org.apache.mahout:mahout-utils:0.5',
+                'org.apache.mahout:mahout-core:0.5') {
+           excludes "slf4j-jcl", "slf4j-api"
+       }
     }
 }
