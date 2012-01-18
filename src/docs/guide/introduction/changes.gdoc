@@ -1,5 +1,5 @@
 *17-Jan-2012 0.5.2*
-* Remove mahout's jar files and using dependency resolution. Thanks for contribution from Robin Bramley ([rbramley|https://github.com/rbramley]). 
+* Remove mahout's jar files and using dependency resolution. Thanks for contribution from Robin Bramley ([rbramley|http://github.com/rbramley]). 
 
 *20-Dec-2011 0.5.1*
 * Fixed issue [#1|http://github.com/limcheekin/mahout-recommender/issues/1]: The web-based recommenders' evaluator is broken in Grails 2.0.0.
